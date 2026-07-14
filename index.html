@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MECH ASSAULT — Base Strike</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app"></div>
+
+<div id="hud">
+  <div id="crosshair"></div>
+  <div id="hpWrap"><div class="cap"></div><div id="hpFill"></div></div>
+  <div id="ammoBar">
+    <div class="slot"><span class="ico">🛢️</span><span class="salv" id="salvageVal">150</span></div>
+    <div class="slot"><span class="ico">🔫</span><span id="ammoVal">6552</span></div>
+    <div class="slot"><span class="ico">🚀</span><span id="rocketVal">30</span></div>
+    <div class="slot"><span class="ico">🗼</span><span id="turretVal">0</span></div>
+  </div>
+  <div class="baseBar" id="baseBlue">YOUR BASE<div class="track"><div class="fill" id="baseBlueFill"></div></div></div>
+  <div class="baseBar" id="baseRed">ENEMY BASE<div class="track"><div class="fill" id="baseRedFill"></div></div></div>
+  <canvas id="minimap" width="130" height="204"></canvas>
+  <div id="msg"></div>
+  <div id="buildHint"></div>
+  <div id="respawn">MECH DESTROYED — RESPAWNING</div>
+</div>
+
+<div id="overlay">
+  <h1>MECH ASSAULT</h1>
+  <h2>BASE STRIKE &nbsp;·&nbsp; CAPTURE-THE-FLAG ASSAULT MODE</h2>
+  <div class="panel" id="briefing">
+    <b style="color:#ffd23c">MISSION:</b> Destroy the <b style="color:#ff8a7a">red enemy base</b> at the far end of the
+    district before enemy assault mechs destroy <b style="color:#8ab4ff">yours</b>.<br>
+    Enemy waves march on your base — build turrets to hold them off.<br><br>
+    <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move &nbsp; <kbd>Mouse</kbd> aim &nbsp; <kbd>Shift</kbd> boost<br>
+    <kbd>LMB</kbd> machine guns &nbsp; <kbd>RMB</kbd> rockets<br>
+    <kbd>B</kbd> build turret (<span style="color:#ffd23c">🛢️ 100 salvage</span>) — <kbd>LMB</kbd> place, <kbd>B</kbd> cancel<br>
+    <kbd>Esc</kbd> release mouse — click canvas to re-engage
+  </div>
+  <button id="startBtn">DEPLOY</button>
+  <div class="sub">Salvage is earned from kills · destroyed enemy turrets pay extra</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
