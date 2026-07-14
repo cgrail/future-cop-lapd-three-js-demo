@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { renderer, scene, camera } from './scene.js';
 import { createWorld } from './world.js';
 import { entities } from './entities.js';
-import { game, stats } from './state.js';
+import { game, stats, difficulty } from './state.js';
 import { player, updatePlayer } from './player.js';
 import { separateMechs } from './helpers.js';
 import { updateProjectiles } from './projectiles.js';
@@ -61,7 +61,7 @@ function animate() {
     salvageTrickle += dt;
     if (salvageTrickle >= 1) {
       salvageTrickle -= 1;
-      stats.salvage += 3;
+      stats.salvage += 3 * difficulty().salvageMult;
       updateHud();
     }
   }

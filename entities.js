@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { scene } from './scene.js';
+import { difficulty } from './state.js';
 
 export const BLUE = { body: 0x2b4fd8, accent: 0x6fd2ff };
 export const RED = { body: 0xa42a20, accent: 0xffb03a };
@@ -179,13 +180,16 @@ export function makeEnemyMech(x, z) {
   const model = makeMech(RED);
   model.group.position.set(x, 0, z);
   const bar = makeBar(5);
+  const m = difficulty().mech;
   return registerEntity({
     kind: 'mech', team: 'red', group: model.group, model,
-    hp: 120, maxHp: 120, alive: true,
+    hp: m.hp, maxHp: m.hp, alive: true,
     hitRadius: 2.4, hitHeight: 7, bar, barHeight: 8.2,
-    speed: 9.5 + Math.random() * 2, range: 36, damage: 7,
-    fireInterval: 0.4, cool: 1 + Math.random(),
+    speed: m.speed + Math.random() * 2, range: m.range, damage: m.damage,
+    fireInterval: m.fireInterval, cool: 1 + Math.random(),
     retarget: 0, target: null, yaw: 0, walkPhase: Math.random() * 6,
+    strafeDir: 1, strafeTimer: 0, stuckT: 0, detourT: 0, detourYaw: 0,
+    px: x, pz: z,
   });
 }
 

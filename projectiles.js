@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { scene } from './scene.js';
 import { obstacles } from './world.js';
 import { entities } from './entities.js';
-import { game, stats } from './state.js';
+import { game, stats, difficulty } from './state.js';
 import { distXZ } from './helpers.js';
 import { spawnExplosion, spawnSpark } from './particles.js';
 import { boomSfx } from './audio.js';
@@ -67,11 +67,11 @@ export function killEntity(e) {
   if (e.team === 'red') {
     if (e.kind === 'mech') {
       stats.kills++;
-      stats.salvage += 40;
+      stats.salvage += 40 * difficulty().salvageMult;
       stats.rockets = Math.min(99, stats.rockets + 6);
       stats.ammo += 200;
     } else if (e.kind === 'turret') {
-      stats.salvage += 80;
+      stats.salvage += 80 * difficulty().salvageMult;
     }
     updateHud();
   }

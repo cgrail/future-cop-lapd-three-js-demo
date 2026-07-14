@@ -17,7 +17,7 @@ export const player = registerEntity({
   kind: 'player', team: 'blue', group: playerModel.group, model: playerModel,
   hp: 300, maxHp: 300, alive: true,
   hitRadius: 2.4, hitHeight: 7, bar: playerBar, barHeight: 8.2,
-  yaw: Math.PI, walkPhase: 0,
+  yaw: Math.PI, walkPhase: 0, velX: 0, velZ: 0,
   gunCool: 0, rocketCool: 0, lastDamaged: -99, respawnAt: 0,
 });
 player.group.position.set(0, 0, 92);
@@ -101,6 +101,9 @@ export function updatePlayer(dt) {
     player.group.position.addScaledVector(move, speed * dt);
     player.walkPhase += dt * 9 * boost;
   }
+  // tracked so enemy AI can lead its shots
+  player.velX = moving ? move.x * speed : 0;
+  player.velZ = moving ? move.z * speed : 0;
   collideCircle(player.group.position, 2.2);
   player.group.rotation.y = player.yaw;
 
