@@ -1,0 +1,140 @@
+import * as THREE from 'three';
+import { scene } from './scene.js';
+import { BLUE, entities, makeBar, makeMech, registerEntity } from './entities.js';
+import { game, stats } from './state.js';
+import { keys } from './input.js';
+import { forwardOf, localToWorld, losBlocked, collideCircle } from './helpers.js';
+import { spawnProjectile } from './projectiles.js';
+import { beep } from './audio.js';
+import { updateHud, showMessage } from './hud.js';
+
+/* ============================================================
+   Player entity
+============================================================ */
+export const playerModel = makeMech(BLUE);
+const playerBar = makeBar(5);
+export const player = registerEntity({
+  kind: 'player', team: 'blue', group: playerModel.group, model: playerModel,
+  hp: 300, maxHp: 300, alive: true,
+  hitRadius: 2.4, hitHeight: 7, bar: playerBar, barHeight: 8.2,
+  yaw: Math.PI, walkPhase: 0,
+  gunCool: 0, rocketCool: 0, lastDamaged: -99, respawnAt: 0,
+});
+player.group.position.set(0, 0, 92);
+
+/* ============================================================
+   Player combat & movement
+============================================================ */
+function findAimTarget(muzzle, yaw) {
+  // Future-Cop style aim assist: snap to best enemy in a narrow cone
+  let best = null, bestAng = 0.16;
+  for (const e of entities) {
+    if (!e.alive || e.team === 'blue') continue;
+    const dx = e.group.position.x - muzzle.x, dz = e.group.position.z - muzzle.z;
+    const d = Math.hypot(dx, dz);
+    if (d > 75 || d < 2) continue;
+    const ang = Math.abs(Math.atan2(Math.sin(Math.atan2(dx, dz) - yaw), Math.cos(Math.atan2(dx, dz) - yaw)));
+    if (ang < bestAng + (e.kind === 'base' ? 0.1 : 0)) {
+      if (losBlocked(muzzle.x, muzzle.z, e.group.position.x, e.group.position.z, 3)) continue;
+      bestAng = ang; best = e;
+    }
+  }
+  return best;
+}
+
+let gunSide = 1;
+export function firePlayerGun() {
+  if (player.gunCool > 0 || stats.ammo <= 0) return;
+  player.gunCool = 0.11;
+  stats.ammo--;
+  gunSide = -gunSide;
+  const muzzle = localToWorld(player, 2.2 * gunSide, 4.5, 2.7);
+  const target = findAimTarget(muzzle, player.yaw);
+  const dir = new THREE.Vector3();
+  if (target) {
+    dir.set(target.group.position.x, Math.min(3.5, target.hitHeight * 0.55), target.group.position.z).sub(muzzle).normalize();
+  } else {
+    dir.copy(forwardOf(player.yaw));
+  }
+  spawnProjectile({ pos: muzzle, dir, speed: 130, damage: 9, team: 'blue', life: 1.2 });
+  beep(300, 90, 0.07, 'square', 0.05);
+  updateHud();
+}
+
+export function fireRocket() {
+  if (!player.alive || player.rocketCool > 0 || stats.rockets <= 0 || game.buildMode) return;
+  player.rocketCool = 0.55;
+  stats.rockets--;
+  const muzzle = localToWorld(player, 0, 4.8, 2.2);
+  const target = findAimTarget(muzzle, player.yaw);
+  const dir = new THREE.Vector3();
+  if (target) {
+    dir.set(target.group.position.x, Math.min(4, target.hitHeight * 0.5), target.group.position.z).sub(muzzle).normalize();
+  } else {
+    dir.copy(forwardOf(player.yaw));
+  }
+  spawnProjectile({ pos: muzzle, dir, speed: 60, damage: 60, team: 'blue', rocket: true, life: 3 });
+  beep(160, 40, 0.35, 'sawtooth', 0.12);
+  updateHud();
+}
+
+export function updatePlayer(dt) {
+  if (!player.alive) {
+    if (game.elapsed >= player.respawnAt) respawnPlayer();
+    return;
+  }
+  const boost = keys['ShiftLeft'] || keys['ShiftRight'] ? 1.65 : 1;
+  const speed = 16 * boost;
+  if (keys['ArrowLeft']) player.yaw += 2.4 * dt;
+  if (keys['ArrowRight']) player.yaw -= 2.4 * dt;
+  const fwd = forwardOf(player.yaw).clone();
+  const right = new THREE.Vector3(-fwd.z, 0, fwd.x);
+  const move = new THREE.Vector3();
+  if (keys['KeyW'] || keys['ArrowUp']) move.add(fwd);
+  if (keys['KeyS'] || keys['ArrowDown']) move.sub(fwd);
+  if (keys['KeyA']) move.sub(right);
+  if (keys['KeyD']) move.add(right);
+
+  const moving = move.lengthSq() > 0;
+  if (moving) {
+    move.normalize();
+    player.group.position.addScaledVector(move, speed * dt);
+    player.walkPhase += dt * 9 * boost;
+  }
+  collideCircle(player.group.position, 2.2);
+  player.group.rotation.y = player.yaw;
+
+  // walk animation + bob
+  const sw = moving ? Math.sin(player.walkPhase) * 0.55 : 0;
+  playerModel.legL.rotation.x = sw;
+  playerModel.legR.rotation.x = -sw;
+  player.group.position.y = moving ? Math.abs(Math.sin(player.walkPhase)) * 0.25 : 0;
+
+  // police light blink
+  const blink = Math.sin(game.elapsed * 10) > 0;
+  playerModel.lampR.material.emissiveIntensity = blink ? 3 : 0.3;
+  playerModel.lampB.material.emissiveIntensity = blink ? 0.3 : 3;
+
+  player.gunCool -= dt;
+  player.rocketCool -= dt;
+  if ((game.mouseDown || keys['Space']) && !game.buildMode) firePlayerGun();
+
+  // slow self-repair after 5s without damage
+  if (player.hp < player.maxHp && game.elapsed - player.lastDamaged > 5) {
+    player.hp = Math.min(player.maxHp, player.hp + 9 * dt);
+    player.bar.set(player.hp / player.maxHp);
+    updateHud();
+  }
+}
+
+function respawnPlayer() {
+  player.alive = true;
+  player.hp = player.maxHp;
+  player.bar.set(1);
+  player.yaw = Math.PI;
+  player.group.position.set(0, 0, 92);
+  scene.add(player.group);
+  document.getElementById('respawn').style.display = 'none';
+  showMessage('MECH REDEPLOYED', '#8ab4ff');
+  updateHud();
+}

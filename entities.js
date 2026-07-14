@@ -1,12 +1,10 @@
 import * as THREE from 'three';
+import { scene } from './scene.js';
 
 export const BLUE = { body: 0x2b4fd8, accent: 0x6fd2ff };
 export const RED = { body: 0xa42a20, accent: 0xffb03a };
 
 export const entities = [];        // everything with hp
-
-let scene = null;
-export function initEntities(s) { scene = s; }
 
 /* ============================================================
    Health bars (canvas sprites)
@@ -190,3 +188,10 @@ export function makeEnemyMech(x, z) {
     retarget: 0, target: null, yaw: 0, walkPhase: Math.random() * 6,
   });
 }
+
+/* bases + enemy defense turrets */
+export const blueBase = makeBaseEntity('blue', 112);
+export const redBase = makeBaseEntity('red', -112);
+makeTurretEntity('red', -17, -98);
+makeTurretEntity('red', 17, -98);
+makeTurretEntity('red', 0, -86);

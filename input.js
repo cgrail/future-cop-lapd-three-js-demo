@@ -1,0 +1,42 @@
+import { renderer } from './scene.js';
+import { game } from './state.js';
+import { toggleBuildMode, tryPlaceTurret } from './build.js';
+import { player, fireRocket } from './player.js';
+
+/* ============================================================
+   Input
+============================================================ */
+export const keys = {};
+
+document.addEventListener('keydown', (e) => {
+  keys[e.code] = true;
+  if (e.code === 'Space' || e.code.startsWith('Arrow')) e.preventDefault();
+  if (game.state !== 'playing') return;
+  if (e.code === 'KeyB' || e.code === 'KeyT') toggleBuildMode();
+  else if (e.code === 'KeyQ') fireRocket();
+  else if (e.code === 'Space' && game.buildMode) tryPlaceTurret();
+});
+document.addEventListener('keyup', (e) => { keys[e.code] = false; });
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+renderer.domElement.addEventListener('mousedown', (e) => {
+  if (game.state !== 'playing') return;
+  if (!game.pointerLocked) { renderer.domElement.requestPointerLock(); return; }
+  if (e.button === 0) {
+    if (game.buildMode) { tryPlaceTurret(); return; }
+    game.mouseDown = true;
+  } else if (e.button === 2) {
+    if (game.buildMode) { toggleBuildMode(); return; }
+    fireRocket();
+  }
+});
+document.addEventListener('mouseup', (e) => { if (e.button === 0) game.mouseDown = false; });
+
+document.addEventListener('pointerlockchange', () => {
+  game.pointerLocked = document.pointerLockElement === renderer.domElement;
+  if (!game.pointerLocked) game.mouseDown = false;
+});
+document.addEventListener('mousemove', (e) => {
+  if (!game.pointerLocked || game.state !== 'playing' || !player.alive) return;
+  player.yaw -= e.movementX * 0.0026;
+});
