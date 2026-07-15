@@ -75,7 +75,7 @@ if (sessionStorage.getItem('mechLevelFly')) {
 
 levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
 (async () => {
-  for (let n = 1; n <= 20; n++) {
+  for (let n = 1; n <= 100; n++) {
     let text;
     try {
       const res = await fetch(`levels/level${n}.txt`);
@@ -121,6 +121,9 @@ levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
     levelList.appendChild(b);
     if (current) levelCur.textContent = `${n} · ${title}`;
   }
+  // start the scrollable list centered on the current level
+  const sel = levelList.querySelector('button.selected');
+  if (sel) levelList.scrollTop = sel.offsetTop - (levelList.clientHeight - sel.offsetHeight) / 2;
   // the screen stays invisible until every level entry is in place — plus
   // a beat longer, so the map fly-in isn't immediately covered by the list
   setTimeout(() => levelScreen.classList.remove('loading'), 1200);

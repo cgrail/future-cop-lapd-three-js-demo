@@ -186,7 +186,13 @@ body.touch #touchControls { display: flex; }
 #levelBtn .chev { color: #8a92ad; }
 
 /* ---------- level list ---------- */
-#levelList { display: flex; flex-direction: column; gap: 10px; width: min(440px, 86vw); }
+#levelList {
+  display: flex; flex-direction: column; gap: 10px; width: min(440px, 86vw);
+  max-height: 58vh; overflow-y: auto; padding-right: 6px;
+  touch-action: pan-y; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: #3a4468 transparent;
+}
+#levelList button { flex: none; }
 #overlay #levelList button {
   display: flex; align-items: center; gap: 14px; text-align: left;
   font-size: 14px; font-weight: 700; letter-spacing: 2px; color: #cdd8ff;
