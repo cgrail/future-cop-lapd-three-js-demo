@@ -1,0 +1,39 @@
+# THE SHELVES — high shelves on both flanks; the middle is a shooting gallery.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggSgggTgggTgggSggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whThhhhhrgggggrhhhhhThw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgwwwgrhhhhhhhw
+whhhhhhhhgwwwghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgggggrhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww

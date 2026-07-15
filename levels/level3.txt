@@ -1,0 +1,41 @@
+# DOWNTOWN — tight city blocks force close-range brawls between the bases.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwwgggggwwwwgggw
+wgggwwwwgggggwwwwgggw
+wgggggggggggggggggggw
+wgggTgggggggggggTgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggwwwwwwwwwwwggggw
+wggggwwwwwwwwwwwggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww

@@ -1,0 +1,41 @@
+# GULCH — a narrow gulch with turret nests dug into the high walls.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhggrrrrrgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhrgglllllggrhhhhw
+whhhhhgglllllgghhhhhw
+whThhhgrlllllrghhhThw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgrlllllrghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgrlllllrghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhrgglllllggrhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhggrrrrrgghhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww

@@ -1,0 +1,37 @@
+# FIREBASE ROW — a row of firebases blocks the direct route.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwwgggggwwwwwggw
+wggwgggwgggggwgggwggw
+wggwgTgwgggggwgTgwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggwwwwwgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwwgggggwwwwwggw
+wggwgggwgggggwgggwggw
+wggwgTgwgggggwgTgwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww

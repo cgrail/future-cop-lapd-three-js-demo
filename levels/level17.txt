@@ -1,0 +1,39 @@
+# NO MANS LAND — open ground between trench lines — move fast or dig in.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwgggggggggggwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wlllllllllrrrlllllllllw
+wlllllllllllllllllllllw
+wlllllllllrrrlllllllllw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggTgggggggggTgggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww

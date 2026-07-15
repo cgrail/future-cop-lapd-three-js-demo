@@ -1,0 +1,41 @@
+# CHASM RUN — sprint the chasm floor or claim the overlooks first.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggSgggTgggTgggSggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhggrrrrrrrgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhrgglllllllggrhhhhw
+whhhhhgglllllllgghhhhhw
+whThhhgrlllllllrghhhThw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgrlllllllrghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgrlllllllrghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhrgglllllllggrhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhggrrrrrrrgghhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww

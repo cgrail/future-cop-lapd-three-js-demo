@@ -1,0 +1,41 @@
+# THE INTERSECT — two sunken highways meet in contested ground.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggrrrgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggTgggglllggggTggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgrllllrlllllllrllllrgw
+wgrlllllllllllllllllrgw
+wgrllllrlllllllrllllrgw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggggggggrrrgggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww

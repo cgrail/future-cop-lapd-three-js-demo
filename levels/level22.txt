@@ -1,0 +1,37 @@
+# CENTER STAGE — whoever holds the center stage holds the game.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggghhrrrhhggggggw
+wgggggghhThhThggggggw
+wgggggghhhhhhhggggggw
+wggggggrhhhhhrggggggw
+wgggggghhhhhhhggggggw
+wgggggghhrrrhhggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww

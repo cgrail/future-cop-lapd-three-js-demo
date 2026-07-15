@@ -1,0 +1,39 @@
+# JUNCTION — a road junction under the guns of four quadrants.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggggggrrrggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggwwwgglllggwwwgggw
+wgggwwwgglllggwwwgggw
+wgggTgggglllggggTgggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgrlllrlllllllrlllrgw
+wgrlllllllllllllllrgw
+wgrlllrlllllllrlllrgw
+wgggggggglllggggggggw
+wgggwwwgglllggwwwgggw
+wgggwwwgglllggwwwgggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wggggggggrrrggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww

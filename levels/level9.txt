@@ -1,0 +1,37 @@
+# HIGHLANDS — high fields flank a narrow central valley road.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whThhhhhggggghhhhhThw
+whhhhhhrgggggrhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhrgggggrhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
