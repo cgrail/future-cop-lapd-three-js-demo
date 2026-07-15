@@ -1,4 +1,4 @@
-import { renderer } from '../world/scene.js';
+import { renderer, scene } from '../world/scene.js';
 import { levelName } from '../world/world.js';
 import { game, stats, difficulty, touch } from './state.js';
 import { entities, redBase } from '../entities/entities.js';
@@ -25,6 +25,42 @@ for (const b of diffBtns) {
   });
 }
 reflectDifficulty();
+
+/* level picker — probe levels/level<N>.txt in order and offer each one.
+   Picking a level reloads with ?level=N: the menu's orbit camera then
+   shows that map rotating behind the overlay as the preview. */
+const levelRow = document.getElementById('levelRow');
+(async () => {
+  for (let n = 1; n <= 20; n++) {
+    let text;
+    try {
+      const res = await fetch(`levels/level${n}.txt`);
+      if (!res.ok) break;
+      text = await res.text();
+    } catch { break; }
+    // a level's title is its first comment line: "# TITLE — description"
+    const first = text.split('\n').find((l) => l.startsWith('#')) || '';
+    const m = first.match(/^#\s*(.+?)\s+—/);
+    const title = m && m[1].length <= 20 ? m[1].toUpperCase() : `LEVEL ${n}`;
+    const b = document.createElement('button');
+    const num = document.createElement('span');
+    num.className = 'num';
+    num.textContent = n;
+    b.append(num, title);
+    b.classList.toggle('selected', `level${n}` === levelName);
+    b.addEventListener('click', () => {
+      if (`level${n}` === levelName) return;
+      const url = new URL(location.href);
+      url.searchParams.set('level', String(n));
+      location.href = url.href;
+    });
+    levelRow.appendChild(b);
+  }
+})();
+
+/* pull the fog back while the menu's orbit camera circles the whole map */
+scene.fog.near = 300;
+scene.fog.far = 900;
 
 /* the red side gets its stats from the chosen difficulty */
 function applyDifficulty() {
@@ -93,6 +129,8 @@ document.getElementById('startBtn').addEventListener('click', (e) => {
   e.currentTarget.blur();
   audioCtx();
   startMusic();
+  scene.fog.near = 90;
+  scene.fog.far = 280;
   applyDifficulty();
   overlay.classList.add('hidden');
   hud.classList.add('active');

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { renderer, scene, camera } from './world/scene.js';
-import { createWorld } from './world/world.js';
+import { createWorld, ARENA } from './world/world.js';
 import { entities } from './entities/entities.js';
 import { game, stats, difficulty } from './core/state.js';
 import { player, updatePlayer } from './entities/player.js';
@@ -71,9 +71,10 @@ function animate() {
     updateCamera(dt);
     drawMinimap();
   } else {
-    // idle menu camera orbit
+    // idle menu camera orbit, scaled so the whole map stays in frame
     const t = performance.now() * 0.0002;
-    camera.position.set(Math.sin(t) * 100, 55, Math.cos(t) * 100);
+    const r = (Math.max(ARENA.hw, ARENA.hd) * 1.1 + 25) / Math.min(1, camera.aspect);
+    camera.position.set(Math.sin(t) * r, r * 0.85, Math.cos(t) * r);
     camera.lookAt(0, 0, 0);
   }
 
