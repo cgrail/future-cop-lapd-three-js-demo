@@ -37,15 +37,40 @@ const levelCur = document.getElementById('levelCur');
 function showLevelScreen(show) {
   levelScreen.classList.toggle('hidden', !show);
   menuScreen.classList.toggle('hidden', show);
+  overlay.classList.toggle('level', show); // hides the title, lighter dimming
 }
 document.getElementById('levelBtn').addEventListener('click', () => showLevelScreen(true));
 document.getElementById('levelBack').addEventListener('click', () => showLevelScreen(false));
+
+/* level switch transition — a level change is a page reload, so the
+   animation is split across it: the old map sinks away before we
+   navigate, and the new map drops in from above after the reload.
+   Everything (terrain + entities) sits directly in the scene, so
+   flying the whole level is just animating scene.position.y. */
+const FLY_DIST = 500;
+let leaving = false;
+
+function flyLevel(from, to, ease, ms) {
+  return new Promise((resolve) => {
+    const t0 = performance.now();
+    (function step() {
+      const t = Math.min((performance.now() - t0) / ms, 1);
+      scene.position.y = from + (to - from) * ease(t);
+      if (t < 1) requestAnimationFrame(step);
+      else resolve();
+    })();
+  });
+}
 
 /* picking a level reloads the page — reopen this screen so the player
    sees the chosen map rotating before heading back to the main menu */
 if (sessionStorage.getItem('mechLevelScreen')) {
   sessionStorage.removeItem('mechLevelScreen');
   showLevelScreen(true);
+}
+if (sessionStorage.getItem('mechLevelFly')) {
+  sessionStorage.removeItem('mechLevelFly');
+  flyLevel(FLY_DIST, 0, (t) => 1 - (1 - t) ** 3, 1000);
 }
 
 levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
@@ -81,9 +106,14 @@ levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
     }
     b.append(num, info);
     b.classList.toggle('selected', current);
-    b.addEventListener('click', () => {
+    b.addEventListener('click', async () => {
       if (current) { showLevelScreen(false); return; }
+      if (leaving) return; // a fly-out is already running
+      leaving = true;
       sessionStorage.setItem('mechLevelScreen', '1');
+      sessionStorage.setItem('mechLevelFly', '1');
+      overlay.classList.add('hidden'); // clear the view for the fly-out
+      await flyLevel(0, -FLY_DIST, (t) => t * t * t, 800);
       const url = new URL(location.href);
       url.searchParams.set('level', String(n));
       location.href = url.href;
@@ -91,6 +121,9 @@ levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
     levelList.appendChild(b);
     if (current) levelCur.textContent = `${n} · ${title}`;
   }
+  // the screen stays invisible until every level entry is in place — plus
+  // a beat longer, so the map fly-in isn't immediately covered by the list
+  setTimeout(() => levelScreen.classList.remove('loading'), 1200);
 })();
 
 /* pull the fog back while the menu's orbit camera circles the whole map */

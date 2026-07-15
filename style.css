@@ -160,6 +160,11 @@ body.touch #touchControls { display: flex; }
 #overlay .screen.hidden { display: none; }
 #overlay .screenTitle { font-size: 15px; font-weight: 700; letter-spacing: 3px; color: #9fb4ff; }
 
+/* level-select mode: no game title, lighter dimming so the map shows through */
+#overlay.level h1, #overlay.level h2 { display: none; }
+#overlay.level { background: rgba(6, 6, 12, 0.1); }
+#levelScreen.loading { visibility: hidden; } /* nothing until the list is complete */
+
 /* ---------- difficulty picker, level-select entry ---------- */
 #diffRow { display: flex; gap: 10px; }
 #overlay #diffRow button, #overlay #levelBtn, #overlay #levelBack {
@@ -185,9 +190,10 @@ body.touch #touchControls { display: flex; }
 #overlay #levelList button {
   display: flex; align-items: center; gap: 14px; text-align: left;
   font-size: 14px; font-weight: 700; letter-spacing: 2px; color: #cdd8ff;
-  background: rgba(20, 24, 40, .85); border: 1px solid #3a4468; border-radius: 8px;
+  background: rgba(20, 24, 40, .5); border: 1px solid #3a4468; border-radius: 8px;
   padding: 12px 16px; box-shadow: none;
 }
+#overlay #levelBack { background: rgba(20, 24, 40, .5); }
 #overlay #levelList button:hover { border-color: #6f83c9; filter: none; }
 #overlay #levelList button.selected {
   border-color: #ffd23c; box-shadow: 0 0 14px rgba(255, 210, 60, .3);

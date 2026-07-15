@@ -32,7 +32,6 @@
 
 <div id="overlay">
   <h1>MECH VS MECH</h1>
-  <h2>BASE STRIKE &nbsp;·&nbsp; CAPTURE-THE-FLAG ASSAULT MODE</h2>
   <div class="screen" id="menuScreen">
     <div class="panel" id="briefing">
       <b style="color:#ffd23c">MISSION:</b> Destroy the <b style="color:#ff8a7a">red enemy base</b> at the far end of the
@@ -52,12 +51,23 @@
     <button id="startBtn">DEPLOY</button>
     <div class="sub">Salvage is earned from kills · destroyed enemy turrets pay extra</div>
   </div>
-  <div class="screen hidden" id="levelScreen">
+  <div class="screen hidden loading" id="levelScreen">
     <div class="screenTitle">SELECT LEVEL</div>
     <div id="levelList"></div>
     <button id="levelBack">◂ BACK</button>
   </div>
 </div>
+
+<script>
+  // returning from a level switch: show the level screen before first paint,
+  // so the main menu doesn't flash while the game modules load (flow.js
+  // reads and clears the flag once it's up)
+  if (sessionStorage.getItem('mechLevelScreen')) {
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('levelScreen').classList.remove('hidden');
+    document.getElementById('overlay').classList.add('level');
+  }
+</script>
 
 <script type="importmap">
 {
