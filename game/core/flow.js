@@ -1,5 +1,5 @@
 import { renderer, scene } from '../world/scene.js';
-import { levelName } from '../world/world.js';
+import { levelName, levels } from '../world/world.js';
 import { game, stats, difficulty, touch } from './state.js';
 import { entities, redBase } from '../entities/entities.js';
 import { audioCtx, boomSfx, startMusic, duckMusic } from '../systems/audio.js';
@@ -26,8 +26,9 @@ for (const b of diffBtns) {
 }
 reflectDifficulty();
 
-/* level select screen — probe levels/level<N>.txt in order and list them.
-   Picking a level reloads with ?level=N: back on the menu, the orbit
+/* level select screen — world.js already fetched the level bundle, so
+   the whole list builds from the imported `levels` with no HTTP calls.
+   Picking a level reloads with ?level=…: back on the menu, the orbit
    camera shows that map rotating behind the overlay as the preview. */
 const menuScreen = document.getElementById('menuScreen');
 const levelScreen = document.getElementById('levelScreen');
@@ -73,20 +74,19 @@ if (sessionStorage.getItem('mechLevelFly')) {
   flyLevel(FLY_DIST, 0, (t) => 1 - (1 - t) ** 3, 1000);
 }
 
-levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
-(async () => {
-  for (let n = 1; n <= 100; n++) {
-    let text;
-    try {
-      const res = await fetch(`levels/level${n}.txt`);
-      if (!res.ok) break;
-      text = await res.text();
-    } catch { break; }
+levelCur.textContent = levelName.toUpperCase(); // fallback for unlisted levels
+
+// numeric levels keep their short ?level=N form, named levels use the name
+const levelParam = (name) => name.match(/^level(\d+)$/)?.[1] ?? name;
+
+{
+  levels.forEach(({ name, text }, i) => {
+    const n = i + 1;
     // a level's title is its first comment line: "# TITLE — description"
     const first = text.split('\n').find((l) => l.startsWith('#')) || '';
     const m = first.match(/^#\s*(.+?)\s+—\s*(.*)/);
-    const title = m && m[1].length <= 20 ? m[1].toUpperCase() : `LEVEL ${n}`;
-    const current = `level${n}` === levelName;
+    const title = m && m[1].length <= 20 ? m[1].toUpperCase() : name.toUpperCase();
+    const current = name === levelName;
 
     const b = document.createElement('button');
     const num = document.createElement('span');
@@ -115,19 +115,19 @@ levelCur.textContent = levelName.toUpperCase(); // fallback for named levels
       overlay.classList.add('hidden'); // clear the view for the fly-out
       await flyLevel(0, -FLY_DIST, (t) => t * t * t, 800);
       const url = new URL(location.href);
-      url.searchParams.set('level', String(n));
+      url.searchParams.set('level', levelParam(name));
       location.href = url.href;
     });
     levelList.appendChild(b);
     if (current) levelCur.textContent = `${n} · ${title}`;
-  }
+  });
   // start the scrollable list centered on the current level
   const sel = levelList.querySelector('button.selected');
   if (sel) levelList.scrollTop = sel.offsetTop - (levelList.clientHeight - sel.offsetHeight) / 2;
   // the screen stays invisible until every level entry is in place — plus
   // a beat longer, so the map fly-in isn't immediately covered by the list
   setTimeout(() => levelScreen.classList.remove('loading'), 1200);
-})();
+}
 
 /* pull the fog back while the menu's orbit camera circles the whole map */
 scene.fog.near = 300;
@@ -148,21 +148,14 @@ function applyDifficulty() {
   redBase.hp = redBase.maxHp = cfg.redBaseHp;
 }
 
-/* on victory, the end screen advances to levels/level<N+1>.txt if it exists */
+/* on victory, the end screen advances to the next level in the bundle */
 let nextLevelUrl = null;
 
-async function findNextLevel() {
-  const m = levelName.match(/^level(\d+)$/);
-  if (!m) return null; // named levels have no numeric successor
-  const next = Number(m[1]) + 1;
-  try {
-    const res = await fetch(`levels/level${next}.txt`, { method: 'HEAD' });
-    if (!res.ok) return null;
-  } catch {
-    return null;
-  }
+function findNextLevel() {
+  const i = levels.findIndex((l) => l.name === levelName);
+  if (i < 0 || i + 1 >= levels.length) return null; // unlisted or last level
   const url = new URL(location.href);
-  url.searchParams.set('level', String(next));
+  url.searchParams.set('level', levelParam(levels[i + 1].name));
   return url.href;
 }
 
@@ -170,9 +163,8 @@ export function endGame(victory) {
   if (game.state === 'over') return;
   game.state = 'over';
   document.exitPointerLock();
-  const nextLevel = victory ? findNextLevel() : Promise.resolve(null);
-  setTimeout(async () => {
-    nextLevelUrl = await nextLevel;
+  setTimeout(() => {
+    nextLevelUrl = victory ? findNextLevel() : null;
     showLevelScreen(false);
     overlay.classList.remove('hidden');
     overlay.querySelector('h1').textContent = victory ? 'VICTORY' : 'BASE LOST';

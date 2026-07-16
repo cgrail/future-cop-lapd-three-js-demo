@@ -10,9 +10,9 @@ No test suite. Plain ES modules with three.js; runs unbundled straight from the 
 python3 -m http.server 8080   # then open http://localhost:8080
 ```
 
-Vite is set up for dist builds only — `npm run build` emits `dist/` (`npm run dev` / `npm run preview` also work). [vite.config.js](vite.config.js) copies `levels/` and `assets/` verbatim (they're runtime `fetch`es, invisible to the bundler), strips the CDN importmap from the built HTML (the bundle uses the pinned npm `three`), targets es2022 for `world.js`'s top-level await, and uses `appType: 'mpa'` so the level-probe loop in `flow.js` gets real 404s. Keep the npm `three` version in lockstep with the importmap URL.
+Vite is set up for dist builds only — `npm run build` emits `dist/` (`npm run dev` / `npm run preview` also work). [vite.config.js](vite.config.js) copies `levels/` and `assets/` verbatim (they're runtime `fetch`es, invisible to the bundler), strips the CDN importmap from the built HTML (the bundle uses the pinned npm `three`), targets es2022 for `world.js`'s top-level await, and uses `appType: 'mpa'` so a missing level file is a real 404 instead of a 200 serving `index.html`. Keep the npm `three` version in lockstep with the importmap URL.
 
-Pick a level with a URL param: `?level=2` or `?level=<name>` loads `levels/<name>.txt` (default `level1`).
+Pick a level with a URL param: `?level=2` or `?level=<name>` (default `level1`). Levels live in the single bundle `levels/levels.txt`; a name not found there falls back to a standalone `levels/<name>.txt` (useful for drafts).
 
 **Do not run tests through Chrome or any headless browser — the user does all in-browser testing themselves.** Report what should be verified manually instead. Syntax-checking a module is fine:
 
@@ -30,12 +30,12 @@ node --input-type=module --check < game/systems/ai.js
 
 ### Level files
 
-`levels/*.txt`, one character per 8×8 tile, first row is the enemy (north, −z) end:
+All levels are in **one bundle, `levels/levels.txt`** — a `=== <name>` line starts a level, bundle order is play order. `world.js` fetches it once at boot and exports `levels` (`[{ name, text }]`); the level-select menu and next-level flow read from that array, so the whole game makes a single level-related HTTP request. Within a level: one character per 8×8 tile, first row is the enemy (north, −z) end:
 
 - Terrain: `g` ground (y 0) · `l` low (−4) · `h` high (+4) · `w` wall · `r` ramp (auto-slopes between its differing flat neighbors)
 - Markers: `P` player spawn · `B` blue base · `R` red base · `T` red turret · `S` enemy wave spawn — a marker sits on the same terrain as the tile to its **left**
 - Rows must be equal length; comment lines start with `#`
-- The first comment line doubles as the level's menu entry: `# TITLE — player-facing description`. The level-select screen (`flow.js`) probes `level1.txt`, `level2.txt`, … in order (stops at the first gap) and lists title + description; picking one reloads with `?level=N`, and the menu's orbit camera previews that map
+- A level's first comment line doubles as its menu entry: `# TITLE — player-facing description`. The level-select screen (`flow.js`) builds from the imported `levels` array; picking one reloads with `?level=N` (or `?level=<name>` for non-numeric names), and the menu's orbit camera previews that map. On victory, the next bundle entry is offered as the next level
 - Design rule: mechs can step up ramps and drop off ledges, but can never climb a ledge — any `l` region needs an `r` exit or things that drop in are stuck there forever
 
 ### Terrain is the single source of truth for physics

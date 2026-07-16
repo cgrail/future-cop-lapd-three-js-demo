@@ -3,15 +3,17 @@ import * as THREE from 'three';
 /* ============================================================
    Level loading + terrain
 
-   Levels are plain text files in levels/ — one character per
-   8x8 tile:
+   All levels live in one bundle, levels/levels.txt — a
+   "=== <name>" line starts a level, file order is play order.
+   Within a level, one character per 8x8 tile:
      g ground · l low ground · h high ground · w wall
      r ramp (slopes between the differing tiles next to it)
    Markers (terrain under them is inherited from the tile to
    their left):
      P player spawn · B blue base · R red base
      T red turret   · S enemy wave spawn point
-   Pick a level with ?level=2 or ?level=name → levels/<name>.txt
+   Pick a level with ?level=2 or ?level=name; a name not in the
+   bundle falls back to levels/<name>.txt (handy for drafts)
 ============================================================ */
 export const TILE = 8;
 export const LOW = -4;            // floor of the lowest tier
@@ -290,6 +292,27 @@ export function createWorld(scene) {
 ============================================================ */
 const param = new URLSearchParams(location.search).get('level') || '1';
 export const levelName = /^\d+$/.test(param) ? `level${param}` : param;
-const res = await fetch(`levels/${encodeURIComponent(levelName)}.txt`);
-if (!res.ok) throw new Error(`Could not load level file levels/${levelName}.txt (HTTP ${res.status})`);
-parseLevel(await res.text());
+
+/* one request fetches every level; the level-select menu (flow.js)
+   reads titles from this list without any further HTTP calls */
+export const levels = []; // [{ name, text }] in play order
+{
+  const res = await fetch('levels/levels.txt');
+  if (!res.ok) throw new Error(`Could not load levels/levels.txt (HTTP ${res.status})`);
+  let cur = null;
+  for (const line of (await res.text()).split('\n')) {
+    const m = line.match(/^===\s*(\S+)/);
+    if (m) levels.push(cur = { name: m[1], text: '' });
+    else if (cur) cur.text += line + '\n';
+  }
+}
+
+let levelText = levels.find((l) => l.name === levelName)?.text;
+if (levelText === undefined) {
+  // not in the bundle — try a standalone file, so a draft level can be
+  // played with ?level=<name> before it's merged into levels.txt
+  const res = await fetch(`levels/${encodeURIComponent(levelName)}.txt`);
+  if (!res.ok) throw new Error(`Level "${levelName}" is not in levels/levels.txt and levels/${levelName}.txt does not exist (HTTP ${res.status})`);
+  levelText = await res.text();
+}
+parseLevel(levelText);
