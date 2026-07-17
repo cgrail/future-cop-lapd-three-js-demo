@@ -11,10 +11,17 @@ canvas { display: block; touch-action: none; }
 /* ---------- start / end overlay ---------- */
 #overlay {
   position: absolute; inset: 0; z-index: 20;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 16px; text-align: center; padding: 24px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; text-align: center;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+           max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
   background: rgba(6, 6, 12, 0.35);
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: #3a4468 transparent;
 }
+/* flex spacers instead of justify-content: center — a centered flex container
+   clips overflow at BOTH ends unreachably; spacers collapse so it scrolls */
+#overlay::before, #overlay::after { content: ""; flex: 1 0 0; }
 #overlay.hidden { display: none; }
 #overlay h1 {
   margin: 0; font-size: 42px; letter-spacing: 4px; font-weight: 800;
@@ -310,6 +317,19 @@ body.touch #ctrlRow { display: flex; }
 #matchInfo { text-align: center; line-height: 1.6; }
 #matchInfo .vs { font-size: 18px; font-weight: 800; letter-spacing: 3px; color: #ffd23c; }
 #matchInfo .sub { font-size: 12px; letter-spacing: 1px; color: #8a92ad; margin-top: 6px; }
+
+/* small screens (portrait or landscape phones): compact the menu so it fits
+   more often — and when it still doesn't, #overlay scrolls. Placed after the
+   menu rules above so the equal-specificity overrides here win the cascade. */
+@media (max-width: 700px), (max-height: 700px) {
+  #overlay { gap: 10px; }
+  #overlay h1 { font-size: 28px; letter-spacing: 3px; }
+  #overlay h2 { font-size: 13px; }
+  #overlay .panel { padding: 12px 16px; font-size: 12px; line-height: 1.7; }
+  #overlay .screen { gap: 10px; }
+  #overlay #startBtn, #overlay #readyBtn { font-size: 16px; padding: 10px 34px; }
+  #overlay #modeScreen button { padding: 12px 16px; font-size: 15px; }
+}
 
 /* the guest fights as the red team — swap the base-bar colors to match */
 body.team-red #baseBlue { color: #ff9f9f; }
