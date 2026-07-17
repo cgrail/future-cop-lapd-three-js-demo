@@ -7,6 +7,91 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<script>
+  // Fatal-error overlay. Inline on purpose: when the module graph fails to
+  // load (CDN unreachable, missing/broken level file, old browser), no module
+  // code ever runs — this is the only place a readable message can come from.
+  // Styled by #errOverlay rules in style.css; buttons use addEventListener
+  // (no inline handlers) to stay within the server's CSP.
+  (() => {
+    let shown = false, more = 0, moreEl = null;
+
+    // map known failure signatures to a human headline + what-to-do hint
+    const explain = (text) => {
+      if (/is not in levels\/levels\.txt/.test(text)) return {
+        title: 'LEVEL NOT FOUND',
+        hint: 'This link points to a level that does not exist. Reset the address to play the default level.',
+      };
+      if (/^Level "|contains no levels/.test(text)) return {
+        title: 'BROKEN LEVEL',
+        hint: 'This level is damaged and cannot be played. Pick a different level from the menu.',
+      };
+      if (/levels\/levels\.txt/.test(text)) return {
+        title: 'LEVELS FAILED TO LOAD',
+        hint: 'The game\'s level data could not be downloaded. Check your internet connection, then reload.',
+      };
+      if (/webgl/i.test(text)) return {
+        title: '3D GRAPHICS UNAVAILABLE',
+        hint: 'The browser could not start WebGL, which this game needs. Enable hardware acceleration in the browser settings, or try a different browser.',
+      };
+      if (/failed to load|failed to fetch|networkerror|error loading|importing a module/i.test(text)) return {
+        title: 'GAME FILES FAILED TO LOAD',
+        hint: 'A file the game needs could not be downloaded. Check your internet connection, then reload.',
+      };
+      return {
+        title: 'SOMETHING WENT WRONG',
+        hint: 'An unexpected error stopped the game. Reloading usually fixes it — if it keeps happening, the details below say what broke.',
+      };
+    };
+
+    const show = (text, detail) => {
+      if (shown) { // keep the first (root) error; just count the follow-ups
+        more++;
+        if (moreEl) moreEl.textContent = `+${more} follow-up error${more > 1 ? 's' : ''} — see the browser console`;
+        return;
+      }
+      shown = true;
+      if (document.exitPointerLock) document.exitPointerLock(); // else the buttons can't be clicked
+      const el = (tag, cls, txt) => {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (txt) e.textContent = txt;
+        return e;
+      };
+      const { title, hint } = explain(text);
+      const ov = el('div');
+      ov.id = 'errOverlay';
+      const btns = el('div', 'errBtns');
+      const reload = el('button', '', '↻ RELOAD');
+      reload.addEventListener('click', () => location.reload());
+      btns.appendChild(reload);
+      if (location.search) { // a bad ?level= / stale ?mp= is fixed by dropping the params
+        const reset = el('button', 'ghost', 'RESET URL & RELOAD');
+        reset.addEventListener('click', () => { location.href = location.pathname; });
+        btns.appendChild(reset);
+      }
+      moreEl = el('div', 'errMore');
+      ov.append(el('h1', '', '⚠ ' + title), el('p', 'errHint', hint), el('pre', 'errDetail', detail || text), moreEl, btns);
+      document.body.appendChild(ov);
+    };
+
+    // capture phase so failed <script>/<link> loads (which don't bubble) land here too
+    window.addEventListener('error', (e) => {
+      const t = e.target;
+      if (t && t !== window && (t.src || t.href)) { show('Failed to load: ' + (t.src || t.href)); return; }
+      const text = (e.error && e.error.message) || e.message || 'Unknown error';
+      if (/^ResizeObserver/.test(text)) return; // browser noise, not a failure
+      show(text, (e.error && e.error.stack) || (text + (e.filename ? `\n    at ${e.filename}:${e.lineno}` : '')));
+    }, true);
+
+    // top-level awaits in the module graph (the level fetch/parse) reject through here
+    window.addEventListener('unhandledrejection', (e) => {
+      const r = e.reason;
+      show((r && r.message) || String(r), r && r.stack);
+    });
+  })();
+</script>
+
 <div id="app"></div>
 
 <div id="hud">

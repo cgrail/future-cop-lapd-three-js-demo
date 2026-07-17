@@ -227,7 +227,7 @@ if (!MP.active) {
   on('close', () => {
     if (manualClose) { manualClose = false; return; }
     resetLobbyUi();
-    setStatus('SERVER OFFLINE — START IT WITH "npm start", THEN REOPEN THIS SCREEN', '#ff8a7a');
+    setStatus('CANNOT REACH THE SERVER — CHECK YOUR CONNECTION AND REOPEN THIS SCREEN', '#ff8a7a');
   });
   on('error', (m) => setStatus(m.message, '#ff8a7a'));
 

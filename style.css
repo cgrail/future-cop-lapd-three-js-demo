@@ -279,3 +279,33 @@ body.team-red #baseBlue { color: #ff9f9f; }
 body.team-red #baseRed { color: #9fc4ff; }
 body.team-red #baseBlue .fill { background: linear-gradient(90deg, #ff4a3d, #ff9a7d); }
 body.team-red #baseRed .fill { background: linear-gradient(90deg, #3d7bff, #7db5ff); }
+
+/* ---------- fatal-error overlay (built by the inline script in index.html) ---------- */
+#errOverlay {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; padding: 24px; text-align: center;
+  background: rgba(6, 6, 12, 0.9);
+}
+#errOverlay h1 {
+  margin: 0; font-size: 26px; letter-spacing: 3px; font-weight: 800; font-style: italic;
+  color: #ff8a7a; text-shadow: 0 0 18px rgba(255, 80, 64, .45), 2px 2px 0 #000;
+}
+#errOverlay .errHint { margin: 0; max-width: 560px; line-height: 1.7; font-size: 14px; color: #cdd6ee; }
+#errOverlay .errDetail {
+  margin: 0; max-width: min(720px, 90vw); max-height: 30vh; overflow: auto;
+  background: rgba(20, 24, 40, .85); border: 1px solid #3a4468; border-radius: 10px;
+  padding: 14px 18px; font: 12px/1.6 ui-monospace, Menlo, Consolas, monospace;
+  color: #9fb4ff; text-align: left; white-space: pre-wrap; word-break: break-word;
+  user-select: text; /* body disables selection — allow copying the error */
+}
+#errOverlay .errMore { font-size: 12px; color: #8a92ad; min-height: 1em; }
+#errOverlay .errBtns { display: flex; gap: 12px; }
+#errOverlay button {
+  font: inherit; font-weight: 800; letter-spacing: 3px; font-size: 14px;
+  color: #111; background: linear-gradient(#ffe27a, #f5a623);
+  border: 2px solid #fff2c0; border-radius: 8px; padding: 10px 26px; cursor: pointer;
+  box-shadow: 0 0 22px rgba(245, 166, 35, .35);
+}
+#errOverlay button.ghost { color: #cdd6ee; background: rgba(20, 24, 40, .8); border-color: #3f4c74; box-shadow: none; }
+#errOverlay button:hover { filter: brightness(1.1); }

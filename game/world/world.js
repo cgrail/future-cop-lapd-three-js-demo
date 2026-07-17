@@ -38,7 +38,18 @@ function parseLevel(text) {
   const lines = text.split('\n').map((l) => l.replace(/\s+$/, ''))
     .filter((l) => l && !l.startsWith('#'));
   const rows = lines.length;
+  if (!rows) throw new Error(`Level "${levelName}" is empty — it has no terrain rows`);
   const cols = Math.max(...lines.map((l) => l.length));
+  for (let r = 0; r < rows; r++) {
+    if (lines[r].length !== cols) {
+      throw new Error(`Level "${levelName}": terrain row ${r + 1} is ${lines[r].length} tiles wide but the widest row is ${cols} — all rows must be equal length`);
+    }
+    for (let c = 0; c < cols; c++) {
+      if (!'glhwrPBRTS'.includes(lines[r][c])) {
+        throw new Error(`Level "${levelName}": unknown tile character "${lines[r][c]}" at row ${r + 1}, column ${c + 1} — valid tiles are g l h w r and markers P B R T S`);
+      }
+    }
+  }
   LEVEL.rows = rows; LEVEL.cols = cols;
   ARENA.hw = cols * TILE / 2;
   ARENA.hd = rows * TILE / 2;
@@ -47,11 +58,13 @@ function parseLevel(text) {
   const cz = (r) => -ARENA.hd + (r + 0.5) * TILE;
 
   // pull out markers; the tile itself becomes plain terrain
-  const chars = lines.map((l) => l.padEnd(cols, 'g').split(''));
+  const chars = lines.map((l) => l.split(''));
+  const seen = new Set();
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const ch = chars[r][c];
       if (!'PBRTS'.includes(ch)) continue;
+      seen.add(ch);
       const p = { x: cx(c), z: cz(r) };
       if (ch === 'P') LEVEL.playerSpawn = p;
       else if (ch === 'B') LEVEL.blueBase = p;
@@ -61,6 +74,15 @@ function parseLevel(text) {
       const left = chars[r][c - 1], right = chars[r][c + 1];
       chars[r][c] = left in TIER ? left : right in TIER ? right : 'g';
     }
+  }
+  const NEEDED = {
+    P: 'a "P" player-spawn marker',
+    B: 'a "B" blue-base marker',
+    R: 'an "R" red-base marker',
+    S: 'an "S" enemy-spawn marker',
+  };
+  for (const ch in NEEDED) {
+    if (!seen.has(ch)) throw new Error(`Level "${levelName}" has no ${NEEDED[ch]} — every level needs one`);
   }
 
   cells = chars.map((row) => row.map((ch) => {
@@ -297,7 +319,12 @@ export const levelName = /^\d+$/.test(param) ? `level${param}` : param;
    reads titles from this list without any further HTTP calls */
 export const levels = []; // [{ name, text }] in play order
 {
-  const res = await fetch('levels/levels.txt');
+  let res;
+  try {
+    res = await fetch('levels/levels.txt');
+  } catch {
+    throw new Error('Could not load levels/levels.txt — the request never reached the server');
+  }
   if (!res.ok) throw new Error(`Could not load levels/levels.txt (HTTP ${res.status})`);
   let cur = null;
   for (const line of (await res.text()).split('\n')) {
@@ -305,13 +332,19 @@ export const levels = []; // [{ name, text }] in play order
     if (m) levels.push(cur = { name: m[1], text: '' });
     else if (cur) cur.text += line + '\n';
   }
+  if (!levels.length) throw new Error('levels/levels.txt contains no levels — every level must start with a "=== <name>" line');
 }
 
 let levelText = levels.find((l) => l.name === levelName)?.text;
 if (levelText === undefined) {
   // not in the bundle — try a standalone file, so a draft level can be
   // played with ?level=<name> before it's merged into levels.txt
-  const res = await fetch(`levels/${encodeURIComponent(levelName)}.txt`);
+  let res;
+  try {
+    res = await fetch(`levels/${encodeURIComponent(levelName)}.txt`);
+  } catch {
+    throw new Error(`Level "${levelName}" is not in levels/levels.txt, and fetching levels/${levelName}.txt failed`);
+  }
   if (!res.ok) throw new Error(`Level "${levelName}" is not in levels/levels.txt and levels/${levelName}.txt does not exist (HTTP ${res.status})`);
   levelText = await res.text();
 }
