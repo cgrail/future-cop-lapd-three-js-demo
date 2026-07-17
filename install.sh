@@ -6,31 +6,47 @@
 # and only this game — on the public internet:
 #
 #   OS      apt upgrade, unattended security upgrades (auto-reboot 04:00)
-#   Net     UFW: deny all inbound except rate-limited SSH and port 80
-#           from Cloudflare's IP ranges only (no bypassing the proxy)
+#   Net     UFW: deny all inbound except rate-limited SSH and the web
+#           ports of the chosen TLS mode (see below)
 #   SSH     hardened drop-in; password auth disabled iff a key is installed
 #   Jail    fail2ban on sshd
 #   Kernel  conservative sysctl hardening
 #   App     Node 22 (NodeSource), build under unprivileged user "mech",
 #           code owned by root (service can't modify itself)
 #   Run     systemd unit with a tight sandbox — read-only FS, syscall
-#           filter, no capability beyond binding port 80
-#   TLS     none on this box — Cloudflare (orange-cloud DNS) terminates
-#           HTTPS and proxies to the origin over plain HTTP on port 80
+#           filter, no capability beyond binding its port
+#
+# TLS — two modes, picked by whether DOMAIN is set:
+#
+#   Let's Encrypt (DOMAIN set)
+#           Caddy on this box terminates HTTPS with an automatically
+#           issued and renewed Let's Encrypt certificate and proxies to
+#           the game server on 127.0.0.1:8080. UFW opens 80 (ACME
+#           challenges + redirect) and 443 to the world. Point a plain
+#           UN-proxied DNS A/AAAA record at this box; EMAIL is optional
+#           (Let's Encrypt expiry notices).
+#
+#   Cloudflare (DOMAIN empty/unset)
+#           No TLS on this box — Cloudflare (orange-cloud DNS, SSL mode
+#           "Flexible", WebSockets enabled) terminates HTTPS and proxies
+#           to the origin over plain HTTP; UFW locks port 80 to
+#           Cloudflare's IP ranges only (no bypassing the proxy).
 #
 # Usage — run ON the server, from a checkout of this repo:
 #
 #   git clone <repo> && cd mech-vs-mech
-#   sudo ./install.sh
+#   sudo DOMAIN=play.example.com EMAIL=you@example.com ./install.sh   # Let's Encrypt
+#   sudo ./install.sh                                                 # Cloudflare
 #
-# In Cloudflare: proxy the DNS record (orange cloud), set SSL mode to
-# "Flexible" (the origin speaks HTTP), and leave WebSockets enabled.
-# Re-running the script is safe: it re-syncs the code, rebuilds,
-# restarts, and refreshes the Cloudflare IP rules. It also installs a
-# systemd timer that runs update.sh every 5 minutes, auto-deploying
-# whatever lands on origin/main.
+# DOMAIN/EMAIL are remembered in /etc/default/mech-vs-mech, so re-runs
+# are plain `sudo ./install.sh`; an explicit `sudo DOMAIN= ./install.sh`
+# switches an existing box back to Cloudflare mode. Re-running is safe:
+# it re-syncs the code, rebuilds, restarts, and refreshes the firewall
+# rules. It also installs a systemd timer that runs update.sh every
+# 5 minutes, auto-deploying whatever lands on origin/main.
 #
-# Testing around Cloudflare (http://<server-ip>/ directly):
+# Testing around Cloudflare (Cloudflare mode only — Let's Encrypt mode
+# already serves everyone directly):
 #
 #   sudo ./install.sh test-on 203.0.113.7   # open port 80 to one address
 #   sudo ./install.sh test-on               # …or to everyone (avoid)
@@ -78,6 +94,29 @@ esac
 [[ -f $SRC_DIR/package.json && -f $SRC_DIR/server/server.js ]] \
   || die "run this script from a checkout of the mech-vs-mech repo"
 grep -qi ubuntu /etc/os-release || warn "this doesn't look like Ubuntu — continuing anyway"
+
+# ---------- TLS mode: Let's Encrypt (DOMAIN set) or Cloudflare ----------
+# DOMAIN/EMAIL unset on the command line reuse what a previous run stored
+# in /etc/default/mech-vs-mech; `DOMAIN=` (set but empty) explicitly
+# switches back to Cloudflare mode.
+DEFAULTS_FILE=/etc/default/mech-vs-mech
+if [[ -z ${DOMAIN+x} && -f $DEFAULTS_FILE ]]; then
+  DOMAIN="$(sed -n 's/^DOMAIN=//p' "$DEFAULTS_FILE" | tail -1)"
+fi
+DOMAIN="${DOMAIN-}"
+if [[ -z ${EMAIL+x} && -f $DEFAULTS_FILE ]]; then
+  EMAIL="$(sed -n 's/^EMAIL=//p' "$DEFAULTS_FILE" | tail -1)"
+fi
+EMAIL="${EMAIL-}"
+if [[ -n $DOMAIN ]]; then
+  [[ $DOMAIN =~ ^[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?$ ]] \
+    || die "DOMAIN doesn't look like a hostname: $DOMAIN"
+  [[ -z $EMAIL || $EMAIL =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+$ ]] \
+    || die "EMAIL doesn't look like an address: $EMAIL"
+  log "TLS mode: Let's Encrypt — Caddy on this box will serve https://$DOMAIN"
+else
+  log "TLS mode: Cloudflare — origin speaks plain HTTP on port 80"
+fi
 
 export DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a
 APT_OPTS=(-y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold)
@@ -141,32 +180,51 @@ EOF
 systemctl enable --now fail2ban
 systemctl restart fail2ban
 
-# ---------- firewall: SSH + HTTP from Cloudflare only ----------
+# ---------- firewall: SSH + the web ports of the TLS mode ----------
 SSH_PORT="$(sshd -T 2>/dev/null | awk '/^port /{print $2; exit}')"
 SSH_PORT="${SSH_PORT:-22}"
-log "Configuring UFW (deny inbound; allow ${SSH_PORT}/tcp rate-limited, 80 from Cloudflare)"
+log "Configuring UFW (deny inbound; allow ${SSH_PORT}/tcp rate-limited + web)"
 ufw default deny incoming
 ufw default allow outgoing
 ufw limit "${SSH_PORT}/tcp" comment 'SSH (rate-limited)'
+# delete every rule whose comment contains $1, highest rule number first
+ufw_purge() {
+  while read -r num; do
+    ufw --force delete "$num" > /dev/null
+  done < <(ufw status numbered | grep -F "$1" | sed -E 's/^\[ *([0-9]+)\].*/\1/' | sort -rn)
+}
 # drop the wide-open web rules an earlier run may have added
 ufw --force delete allow 80/tcp  > /dev/null 2>&1 || true
 ufw --force delete allow 443/tcp > /dev/null 2>&1 || true
-# lock port 80 to Cloudflare's published ranges so nobody can talk to
-# the origin around the proxy (re-runs pick up newly published ranges)
-CF_IPS="$(
-  curl -fsS --max-time 15 https://www.cloudflare.com/ips-v4 && echo &&
-  curl -fsS --max-time 15 https://www.cloudflare.com/ips-v6 && echo
-)" || CF_IPS=""
-if [[ -n $CF_IPS ]]; then
-  while IFS= read -r net; do
-    [[ $net =~ ^[0-9a-fA-F.:]+/[0-9]+$ ]] || continue
-    ufw allow from "$net" to any port 80 proto tcp comment 'HTTP (Cloudflare)' > /dev/null
-  done <<< "$CF_IPS"
-  echo "  port 80 open to $(grep -c / <<< "$CF_IPS") Cloudflare ranges"
+if [[ -n $DOMAIN ]]; then
+  # Let's Encrypt mode: Caddy needs 80 (ACME challenges + HTTPS redirect)
+  # and 443 reachable from the whole internet
+  ufw_purge 'HTTP (Cloudflare)'
+  ufw allow 80/tcp  comment 'HTTP (ACME + redirect)' > /dev/null
+  ufw allow 443/tcp comment 'HTTPS'                  > /dev/null
+  ufw allow 443/udp comment 'HTTPS (HTTP/3)'         > /dev/null
+  echo "  ports 80 + 443 open to everyone (Caddy terminates TLS on this box)"
 else
-  warn "could not fetch Cloudflare IP ranges — opening port 80 to everyone.
+  # Cloudflare mode: lock port 80 to Cloudflare's published ranges so
+  # nobody can talk to the origin around the proxy (re-runs pick up
+  # newly published ranges)
+  ufw_purge 'HTTP (ACME + redirect)'
+  ufw_purge 'HTTPS'
+  CF_IPS="$(
+    curl -fsS --max-time 15 https://www.cloudflare.com/ips-v4 && echo &&
+    curl -fsS --max-time 15 https://www.cloudflare.com/ips-v6 && echo
+  )" || CF_IPS=""
+  if [[ -n $CF_IPS ]]; then
+    while IFS= read -r net; do
+      [[ $net =~ ^[0-9a-fA-F.:]+/[0-9]+$ ]] || continue
+      ufw allow from "$net" to any port 80 proto tcp comment 'HTTP (Cloudflare)' > /dev/null
+    done <<< "$CF_IPS"
+    echo "  port 80 open to $(grep -c / <<< "$CF_IPS") Cloudflare ranges"
+  else
+    warn "could not fetch Cloudflare IP ranges — opening port 80 to everyone.
     Re-run this script later to restrict it to Cloudflare."
-  ufw allow 80/tcp comment 'HTTP'
+    ufw allow 80/tcp comment 'HTTP'
+  fi
 fi
 ufw --force enable
 
@@ -205,6 +263,13 @@ if ! command -v node > /dev/null || [[ "$(node -p 'process.versions.node.split("
 fi
 log "Node $(node --version) / npm $(npm --version)"
 
+# switching Let's Encrypt → Cloudflare: Caddy must release port 80
+# before the game service (restarted below with PORT=80) can bind it
+if [[ -z $DOMAIN ]] && systemctl is-enabled caddy > /dev/null 2>&1; then
+  log "Cloudflare mode: stopping Caddy from an earlier Let's Encrypt setup"
+  systemctl disable --now caddy
+fi
+
 # ---------- app user + code ----------
 if ! id -u "$APP_USER" > /dev/null 2>&1; then
   log "Creating system user '$APP_USER'"
@@ -222,18 +287,39 @@ chmod -R g-w,o-rwx "$APP_DIR"
 
 # ---------- systemd service (sandboxed) ----------
 log "Installing systemd service"
-if [[ ! -f /etc/default/mech-vs-mech ]]; then
-  cat > /etc/default/mech-vs-mech <<'EOF'
+if [[ ! -f $DEFAULTS_FILE ]]; then
+  cat > "$DEFAULTS_FILE" <<'EOF'
 # mech-vs-mech tunables — see the README's "Deploying to the Internet" table.
-# Cloudflare terminates HTTPS and proxies to this port over plain HTTP;
-# TRUST_PROXY makes the server take client IPs from X-Forwarded-For
-# (Cloudflare appends the real client last).
-PORT=80
+# PORT / HOST / TRUST_PROXY / DOMAIN / EMAIL follow the TLS mode and are
+# rewritten by every install.sh run; the commented knobs are yours to set.
 TRUST_PROXY=1
 #ALLOWED_ORIGINS=
 #MAX_CLIENTS=200
 #MAX_CONNS_PER_IP=8
 EOF
+fi
+# upsert KEY=VALUE, un-commenting a #KEY= line if that's what's there
+set_tunable() {
+  if grep -qE "^#?$1=" "$DEFAULTS_FILE"
+  then sed -i -E "s|^#?$1=.*|$1=$2|" "$DEFAULTS_FILE"
+  else echo "$1=$2" >> "$DEFAULTS_FILE"
+  fi
+}
+# comment KEY out (value kept for reference) so it stops applying
+unset_tunable() { sed -i -E "s|^($1=)|#\1|" "$DEFAULTS_FILE"; }
+set_tunable TRUST_PROXY 1 # both modes proxy: client IPs come from X-Forwarded-For
+if [[ -n $DOMAIN ]]; then
+  GAME_PORT=8080
+  set_tunable PORT 8080      # Caddy owns 80/443 …
+  set_tunable HOST 127.0.0.1 # … and is the only legitimate client
+  set_tunable DOMAIN "$DOMAIN"
+  if [[ -n $EMAIL ]]; then set_tunable EMAIL "$EMAIL"; else unset_tunable EMAIL; fi
+else
+  GAME_PORT=80
+  set_tunable PORT 80
+  unset_tunable HOST
+  unset_tunable DOMAIN # an active DOMAIN= line would flip re-runs back to Let's Encrypt
+  unset_tunable EMAIL
 fi
 cat > /etc/systemd/system/mech-vs-mech.service <<EOF
 [Unit]
@@ -257,7 +343,8 @@ LimitNOFILE=65535
 MemoryMax=512M
 TasksMax=64
 
-# sandbox: read-only everything; the only capability is binding port 80.
+# sandbox: read-only everything; the only capability is binding port 80
+# (Cloudflare mode — unused but harmless on the Let's Encrypt port 8080).
 # (No MemoryDenyWriteExecute — the V8 JIT needs W+X pages.)
 NoNewPrivileges=yes
 ProtectSystem=strict
@@ -295,6 +382,40 @@ systemctl restart mech-vs-mech
 runuser -u "$(stat -c %U "$SRC_DIR")" -- git -C "$SRC_DIR" rev-parse HEAD \
   > "$APP_HOME/deployed-rev" 2>/dev/null || true
 
+# ---------- Caddy: HTTPS via Let's Encrypt (DOMAIN mode only) ----------
+# configured after the game service so a mode switch has already moved
+# the game off port 80 by the time Caddy needs it
+if [[ -n $DOMAIN ]]; then
+  if ! command -v caddy > /dev/null; then
+    log "Installing Caddy from its official apt repo"
+    install -d -m 755 /etc/apt/keyrings
+    curl -fsSL https://dl.cloudsmith.io/public/caddy/stable/gpg.key \
+      | gpg --dearmor --yes -o /etc/apt/keyrings/caddy-stable.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/caddy-stable.gpg] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main" \
+      > /etc/apt/sources.list.d/caddy-stable.list
+    apt-get update -q
+    apt-get install "${APT_OPTS[@]}" -q caddy
+  fi
+  log "Configuring Caddy → https://$DOMAIN (Let's Encrypt, auto-issued + auto-renewed)"
+  {
+    echo '# managed by mech-vs-mech install.sh — re-runs overwrite this file'
+    if [[ -n $EMAIL ]]; then
+      printf '{\n\temail %s\n}\n' "$EMAIL"
+    fi
+    cat <<EOF
+$DOMAIN {
+	# game server (HTTP + WebSocket /ws); Caddy adds the X-Forwarded-*
+	# headers the app trusts via TRUST_PROXY=1
+	reverse_proxy 127.0.0.1:8080
+}
+EOF
+  } > /etc/caddy/Caddyfile
+  caddy validate --config /etc/caddy/Caddyfile > /dev/null 2>&1 \
+    || die "generated /etc/caddy/Caddyfile fails validation"
+  systemctl enable caddy > /dev/null 2>&1 || true
+  systemctl reload-or-restart caddy
+fi
+
 # ---------- auto-update: track origin/main every 5 min ----------
 log "Installing auto-update timer (update.sh)"
 cat > /etc/systemd/system/mech-vs-mech-update.service <<EOF
@@ -325,8 +446,26 @@ systemctl enable --now mech-vs-mech-update.timer
 # ---------- summary ----------
 sleep 2
 log "Done"
-systemctl --no-pager --quiet is-active mech-vs-mech && echo "  game service : running on port 80" || warn "game service is NOT running — check: journalctl -u mech-vs-mech"
-cat <<EOF
+systemctl --no-pager --quiet is-active mech-vs-mech && echo "  game service : running on port $GAME_PORT" || warn "game service is NOT running — check: journalctl -u mech-vs-mech"
+if [[ -n $DOMAIN ]]; then
+  systemctl --no-pager --quiet is-active caddy && echo "  caddy        : running — terminates HTTPS for https://$DOMAIN" || warn "caddy is NOT running — check: journalctl -u caddy"
+  cat <<EOF
+
+  dns          : point a plain UN-proxied A/AAAA record for $DOMAIN at this
+                 box — Caddy keeps retrying issuance until it resolves here
+  certificate  : Let's Encrypt via Caddy, requested at startup and renewed
+                 automatically; watch issuance: journalctl -u caddy -f
+  firewall     : $(ufw status | head -1) — 80/443 open; the game port (8080)
+                 is loopback-only, reachable through Caddy alone
+  tunables     : /etc/default/mech-vs-mech   (then: systemctl restart mech-vs-mech)
+  logs         : journalctl -u mech-vs-mech -f
+  quick check  : curl -sI https://$DOMAIN/ | head -1
+  updates      : auto — pushes to origin/main go live within ~5 min
+                 (mech-vs-mech-update.timer → update.sh, discards local
+                 edits in this checkout); manual: sudo ./update.sh --force
+EOF
+else
+  cat <<EOF
 
   cloudflare   : point a proxied (orange-cloud) DNS record at this server,
                  SSL mode "Flexible" (origin speaks plain HTTP),
@@ -339,3 +478,4 @@ cat <<EOF
                  (mech-vs-mech-update.timer → update.sh, discards local
                  edits in this checkout); manual: sudo ./update.sh --force
 EOF
+fi

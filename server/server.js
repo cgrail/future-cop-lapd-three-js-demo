@@ -28,6 +28,8 @@
 
    Internet hardening — everything is tuned by env vars, all optional:
      PORT               listen port (default 8080)
+     HOST               listen address (default all interfaces; set
+                        127.0.0.1 behind a reverse proxy on the same box)
      TRUST_PROXY=1      behind a TLS-terminating reverse proxy: trust
                         X-Forwarded-* for client IPs / HSTS
      ALLOWED_ORIGINS    extra WebSocket origins, comma-separated
@@ -45,6 +47,7 @@ import { WebSocketServer } from 'ws';
 
 const DIST = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const PORT = Number(process.env.PORT) || 8080;
+const HOST = process.env.HOST || undefined; // undefined → all interfaces
 
 const TRUST_PROXY = /^(1|true|yes)$/i.test(process.env.TRUST_PROXY || '');
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '')
@@ -356,6 +359,6 @@ for (const sig of ['SIGINT', 'SIGTERM']) {
   });
 }
 
-server.listen(PORT, () => {
-  console.log(`mech-vs-mech server → http://localhost:${PORT}  (WebSocket lobby on /ws)`);
+server.listen(PORT, HOST, () => {
+  console.log(`mech-vs-mech server → http://${HOST || 'localhost'}:${PORT}  (WebSocket lobby on /ws)`);
 });

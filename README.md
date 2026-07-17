@@ -70,6 +70,7 @@ Everything is tuned with optional env vars:
 | Variable | Default | Meaning |
 |---|---|---|
 | `PORT` | `8080` | Listen port |
+| `HOST` | all interfaces | Listen address — set `127.0.0.1` when a reverse proxy on the same box is the only legitimate client |
 | `TRUST_PROXY` | off | Set to `1` behind a reverse proxy: client IPs are read from `X-Forwarded-For` (for the per-IP cap) and HSTS is sent on HTTPS |
 | `ALLOWED_ORIGINS` | — | Extra WebSocket origins, comma-separated (e.g. `https://mygame.github.io`). Same-origin as the served page is always allowed |
 | `MAX_CLIENTS` | `200` | Total simultaneous WebSocket connections |
@@ -79,6 +80,17 @@ Notes:
 
 - The WebSocket handshake requires a matching `Origin`, so other websites can't drive your lobby from their visitors' browsers. If you serve the game page from a *different* origin than the server (GitHub Pages + `?server=…`, for example), list that page's origin in `ALLOWED_ORIGINS` — and make sure your proxy forwards the original `Host` header (Caddy and nginx's `proxy_set_header Host $host` do).
 - The server holds no persistent state and writes nothing to disk — a restart just empties the lobby and any running matches.
+
+### One-command VPS setup
+
+For a dedicated Ubuntu box, [install.sh](install.sh) does all of the above in one go — OS hardening, UFW firewall, a sandboxed systemd unit, and a timer that auto-deploys pushes to `origin/main` within ~5 minutes. It offers two TLS setups:
+
+```bash
+sudo DOMAIN=play.example.com EMAIL=you@example.com ./install.sh   # HTTPS on the box: Caddy + Let's Encrypt
+sudo ./install.sh                                                 # HTTP-only origin behind Cloudflare
+```
+
+With `DOMAIN` set, Caddy is installed on the same box, obtains a Let's Encrypt certificate (point a plain, **un-proxied** DNS A/AAAA record at the server first — Caddy retries issuance until the name resolves there), renews it automatically, and proxies to the game server on `127.0.0.1:8080`. `EMAIL` is optional (certificate expiry notices). Without `DOMAIN`, the origin speaks plain HTTP on port 80, locked to Cloudflare's IP ranges, and Cloudflare (orange-cloud DNS, SSL mode "Flexible") terminates HTTPS. The choice is remembered in `/etc/default/mech-vs-mech`, so re-runs are just `sudo ./install.sh`; `sudo DOMAIN= ./install.sh` switches back to Cloudflare mode.
 
 ## How to Play
 
