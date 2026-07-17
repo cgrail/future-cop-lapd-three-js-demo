@@ -113,6 +113,10 @@ canvas { display: block; touch-action: none; }
   height: min(204px, 38vh); width: auto;
   background: rgba(8,10,16,.3); border: 1px solid rgba(74,85,120,.6); border-radius: 6px;
 }
+/* touch devices: no minimap (it covers the mech / ammo row on phone screens);
+   the build hint re-anchors just above the ammo row instead of above the map */
+body.touch #minimap { display: none; }
+body.touch #buildHint { bottom: calc(max(18px, env(safe-area-inset-bottom)) + 64px); }
 
 #msg {
   position: absolute; left: 50%; top: 24%; transform: translateX(-50%);
