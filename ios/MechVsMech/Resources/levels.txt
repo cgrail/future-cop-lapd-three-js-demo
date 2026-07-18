@@ -1,0 +1,2352 @@
+=== level1
+# THE DISTRICT — city blocks between the bases; a sunken west road and a high east shelf flank the plaza.
+# Format:   one character per 8x8 tile, first row is the enemy (north) end
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wgggSgggggRgggggSgggw
+wgggggggggggggggggggw
+wgggggggTgSgTgggggggw
+wgggggggggTgggggggggw
+wgggggggggggggggggggw
+wgggwwwwgggggwwwwgggw
+wgggwwwwgggggwwwwgggw
+wgggggggggggggggggggw
+wrrrggggggggggggggggw
+wlllgggggggggggghhhhw
+wlllgggggggggggghhhhw
+wlllggggrrrrrggrhhhhw
+wlllgggghhhhhggrhhhhw
+wlllgggghhhhhggrhhhhw
+wlllgggghhhhhggghhhhw
+wlllgggghhhhhggghhhhw
+wlllgggghhhhhgggggggw
+wlllggggrrrrrgggggggw
+wlllggggggggggggggggw
+wlllggggggggggggggggw
+wrrrggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwwgggggwwwwgggw
+wgggwwwwgggggwwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level2
+# CANYON — a sunken river valley splits the map; high shelves with red turrets overlook it.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+whhhhgggrrrrrggghhhhw
+whhhhggrlllllrgghhhhw
+whhThggrlllllrgghThhw
+whhhhggrlllllrgghhhhw
+whhhhrgrlllllrgrhhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlwwwlrgghhhhw
+whhhhggrlwwwlrgghhhhw
+whhhhggrlwwwlrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhrgrlllllrgrhhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhggrlllllrgghhhhw
+whhhhgggrrrrrggghhhhw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level3
+# DOWNTOWN — tight city blocks force close-range brawls between the bases.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwwgggggwwwwgggw
+wgggwwwwgggggwwwwgggw
+wgggggggggggggggggggw
+wgggTgggggggggggTgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggwwwwwwwwwwwggggw
+wggggwwwwwwwwwwwggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level4
+# THE GORGE — a sunken channel splits the map; shelf turrets overlook it.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhggrrrrrgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhrgglllllggrhhhhhw
+whhhhhhgglllllgghhhhhhw
+whThhhhgglllllgghhhhThw
+whhhhhhgrlllllrghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgrlllllrghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhrgglllllggrhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhggrrrrrgghhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level5
+# RIDGELINE — a fortified ridge bars the way; take the pass or the ramps.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhhThggghThhhhhhhw
+whhhhhhhhhggghhhhhhhhhw
+whhhhhrrhhggghhrrhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level6
+# THE CITADEL — the enemy base sits on a walled plateau; fight your way up.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhShhhhRhhhhShhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhThhhhhhhhhThhhhhw
+whhhhhhhrrhhhrrhhhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgllllllllrgrllllllllgw
+wgllllllllrgrllllllllgw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level7
+# TRENCHLINE — sunken trenches cross the field; cross at the ramps.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwww
+wgggggggggggggggggw
+wgggSggggRggggSgggw
+wgggggggggggggggggw
+wggggggTgggTggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggwwwgggggggwwwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wlllllllrrrlllllllw
+wlllllllllllllllllw
+wlllllllrrrlllllllw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggTgggggggggTgggw
+wggwwwgggggggwwwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggggPggggggggw
+wgggggggggggggggggw
+wggggggggBggggggggw
+wgggggggggggggggggw
+wwwwwwwwwwwwwwwwwww
+
+=== level8
+# DRY LAKE — a drained lakebed with a single causeway across.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgglrrllllgggllllrrlggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wggllllllrgggrllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglrgTlllggglllgTrlggw
+wgglrgglllggglllggrlggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wggllllllrgggrllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglrrllllgggllllrrlggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level9
+# HIGHLANDS — high fields flank a narrow central valley road.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whThhhhhggggghhhhhThw
+whhhhhhrgggggrhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhrgggggrhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level10
+# PILLBOX ALLEY — walled gun pockets cover the approaches.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwwgggggggwwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwwwgggggggwwwwwggw
+wggwgggwgggggggwgggwggw
+wggwgTgwgggggggwgTgwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggwwwwwggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level11
+# CROSSROADS — sunken roads cross mid-map; hold the junction.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggrrrgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggTgggglllggggTggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgrllllrlllllllrllllrgw
+wgrlllllllllllllllllrgw
+wgrllllrlllllllrllllrgw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggggggggrrrgggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level12
+# THE ARENA — a raised platform dominates the center of the map.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwwgggggggggwwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggghhrrrhhgggggggw
+wggggggghhThhThgggggggw
+wgggggggrhhhhhrgggggggw
+wggggggghhrrrhhgggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwwgggggggggwwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level13
+# OLD TOWN — ruined blocks and narrow alleys; watch every corner.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggwwwgggggwwwggggw
+wggggwwwgggggwwwggggw
+wgggggggggggggggggggw
+wgggTgggggggggggTgggw
+wgggggggggggggggggggw
+wggwwwgggwwwgggwwwggw
+wggwwwgggwwwgggwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwggwwwggwwwgggw
+wgggwwwggwwwggwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwgggggggggwwwggw
+wggwwwgggggggggwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level14
+# RAVINE — drop into the ravine for cover or fight along the rims.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhggrrrrrrrgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhrgglllllllggrhhhhw
+whhhhhgglllllllgghhhhhw
+whThhhgglllllllgghhhThw
+whhhhhgrlllllllrghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgrlllllllrghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhrgglllllllggrhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhggrrrrrrrgghhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level15
+# TWIN MESAS — two mesas guard the road north; each hides a turret.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwgggggggwwwgggw
+wgggwwwgggggggwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhhThggghThhhhhhw
+whhhhrrhhggghhrrhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwgggggggwwwgggw
+wgggwwwgggggggwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level16
+# HIGHKEEP — a hilltop keep with narrow ramps and rim turrets.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhShhhhRhhhhShhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhThhhhhhhhhThhhhhw
+whhhhhhhrrhhhrrhhhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgllllllllrgrllllllllgw
+wgllllllllrgrllllllllgw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level17
+# NO MANS LAND — open ground between trench lines — move fast or dig in.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwgggggggggggwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wlllllllllrrrlllllllllw
+wlllllllllllllllllllllw
+wlllllllllrrrlllllllllw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggTgggggggggTgggggw
+wggwwwgggggggggggwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level18
+# THE BASIN — fight through the basin or hold the high shoreline.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgglrrllllgggllllrrlggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wggllllllrgggrllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglrgTlllggglllgTrlggw
+wgglrgglllggglllggrlggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wggllllllrgggrllllllggw
+wgglllllllggglllllllggw
+wgglllllllggglllllllggw
+wgglrrllllgggllllrrlggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level19
+# TWIN PLATEAUS — two plateaus overlook the only road north.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whThhhhhhggggghhhhhhThw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgggggrhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhgwwwghhhhhhhhw
+whhhhhhhhgwwwghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgggggrhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level20
+# THE BUNKERS — bunkered turrets must be dug out one by one.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwwgggggwwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwwgggggwwwwwggw
+wggwgggwgggggwgggwggw
+wggwgTgwgggggwgTgwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggwwwwwgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level21
+# JUNCTION — a road junction under the guns of four quadrants.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggggggrrrggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggwwwgglllggwwwgggw
+wgggwwwgglllggwwwgggw
+wgggTgggglllggggTgggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgrlllrlllllllrlllrgw
+wgrlllllllllllllllrgw
+wgrlllrlllllllrlllrgw
+wgggggggglllggggggggw
+wgggwwwgglllggwwwgggw
+wgggwwwgglllggwwwgggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wggggggggrrrggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level22
+# CENTER STAGE — whoever holds the center stage holds the game.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwgggggggwwwgggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggghhrrrhhggggggw
+wgggggghhThhThggggggw
+wgggggghhhhhhhggggggw
+wggggggrhhhhhrggggggw
+wgggggghhhhhhhggggggw
+wgggggghhrrrhhggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wgggwwwgggggggwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level23
+# THE BLOCKS — a dense grid of buildings with turrets dug into the gaps.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wggggTgggggggggggTggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggwwwgggggwwwgggggw
+wgggggwwwgggggwwwgggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggwwwgggwwwggggggw
+wggggggwwwgggwwwggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggwwwgggggwwwgggggw
+wgggggwwwgggggwwwgggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level24
+# DRY RIVER — an empty riverbed crossed by ramps; high ground on both banks.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhggrrrrrgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhrgglllllggrhhhhhw
+whhhhhhgrlllllrghhhhhhw
+whThhhhgglllllgghhhhThw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgrlllllrghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgrlllllrghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhrgglllllggrhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhgglllllgghhhhhhw
+whhhhhhggrrrrrgghhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level25
+# THE STEPPES — stacked terraces climb toward the enemy base.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhThhggghhThhhhhhw
+whhhhhhhhhggghhhhhhhhhw
+whhhhhrrhhggghhrrhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggghhhhThhhhhThhhhgggw
+wggghhhhhhhhhhhhhhhgggw
+wggghhrrhhhhhhhrrhhgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level26
+# BASTION HILL — storm the hill — the only ways up are covered by fire.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhShhhhRhhhhShhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhThhhhhhhhhThhhhhw
+whrhhhhhrrhhhrrhhhhhrhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgllllllllrgrllllllllgw
+wgllllllllrgrllllllllgw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggwwwwwggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level27
+# THE DIGS — excavated ditches give cover to whoever gets there first.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwgggggggggggwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wlllllllllrrrlllllllllw
+wlllllllllllllllllllllw
+wlllllllllrrrlllllllllw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wlrrlllllllllllllllrrlw
+wlllllllllllllllllllllw
+wlrrlllllllllllllllrrlw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggTgggggggggTgggggw
+wggwwwgggggggggggwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level28
+# MUDFLATS — sunken flats with turret islands mid-lake.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgglrrlllllglllllrrlggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wgglllllllrgrlllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wgglrgTllllgllllgTrlggw
+wgglrggllllgllllggrlggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wgglllllllrgrlllllllggw
+wggllllllllgllllllllggw
+wggllllllllgllllllllggw
+wgglrrlllllglllllrrlggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level29
+# TABLELANDS — flat-topped tablelands command the center.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whThhhhhhggggghhhhhhThw
+whhhhhhhrgggggrhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgwwwgrhhhhhhhw
+whhhhhhhhgwwwghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgggggrhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level30
+# FIREBASE ROW — a row of firebases blocks the direct route.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggggggTgggTgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwwgggggwwwwwggw
+wggwgggwgggggwgggwggw
+wggwgTgwgggggwgTgwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggwwwwwgggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwwgggggwwwwwggw
+wggwgggwgggggwgggwggw
+wggwgTgwgggggwgTgwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level31
+# THE INTERSECT — two sunken highways meet in contested ground.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggrrrgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggTgggglllggggTggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgrllllrlllllllrllllrgw
+wgrlllllllllllllllllrgw
+wgrllllrlllllllrllllrgw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggggggggrrrgggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level32
+# KING OF THE HILL — take the hill, keep the hill.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggggggTgggTggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wggwwwwgggggggggwwwwggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggghhrrrhhgggggggw
+wggggggghhThhThgggggggw
+wgggggggrhhhhhrgggggggw
+wggggggghhrrrhhgggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggwwwwgggggggggwwwwggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level33
+# MIDTOWN — staggered blocks channel the waves into killing lanes.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggSgggTgggTgggSggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggwwwgggwwwggggggw
+wggggggwwwgggwwwggggggw
+wgggggggggggggggggggggw
+wggggTgggggggggggTggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggwwwggwwwggwwwggggw
+wggggwwwggwwwggwwwggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggwwwwwwwwwggggggw
+wggggggwwwwwwwwwggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level34
+# CHASM RUN — sprint the chasm floor or claim the overlooks first.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggSgggTgggTgggSggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhggrrrrrrrgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhrgglllllllggrhhhhw
+whhhhhgglllllllgghhhhhw
+whThhhgrlllllllrghhhThw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgrlllllllrghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgrlllllllrghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhrgglllllllggrhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhgglllllllgghhhhhw
+whhhhhggrrrrrrrgghhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level35
+# HOGBACK — a long hogback ridge with defended crossings.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwww
+wgggggggggggggggggw
+wgggSggggRggggSgggw
+wgggggggggggggggggw
+wggSgggTgggTgggSggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+whhhhhThggghThhhhhw
+whhhhhhhggghhhhhhhw
+whhhrrhhggghhrrhhhw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggghThhhhhhhThgggw
+wggghhhhhhhhhhhgggw
+wgggrrhhhhhhhrrgggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggggPggggggggw
+wgggggggggggggggggw
+wggggggggBggggggggw
+wgggggggggggggggggw
+wwwwwwwwwwwwwwwwwww
+
+=== level36
+# ACROPOLIS — the high city: plateau, moat and causeways.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhShhhhRhhhhShhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhThhhhhhhhhThhhhhw
+whrhhhhhrrhhhrrhhhhhrhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wglrgrllllrgrllllrgrlgw
+wglrgrllllrgrllllrgrlgw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggwwwwwggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level37
+# FRONTLINE — a fortified front line of trenches and pillboxes.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwww
+wgggggggggggggggggw
+wgggSggggRggggSgggw
+wgggggggggggggggggw
+wggSgggTgggTgggSggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggwwwgggggggwwwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wlllllllrrrlllllllw
+wlllllllllllllllllw
+wlllllllrrrlllllllw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wlrrlllllllllllrrlw
+wlllllllllllllllllw
+wlrrlllllllllllrrlw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggTgggggggggTgggw
+wggwwwgggggggwwwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggggPggggggggw
+wgggggggggggggggggw
+wggggggggBggggggggw
+wgggggggggggggggggw
+wwwwwwwwwwwwwwwwwww
+
+=== level38
+# SALT FLATS — a wide salt pan; the causeway is the fast lane.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgglrrllllgllllrrlggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wggllllllrgrllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglrgTlllglllgTrlggw
+wgglrgglllglllggrlggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wggllllllrgrllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglrrllllgllllrrlggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level39
+# THE SHELVES — high shelves on both flanks; the middle is a shooting gallery.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggSgggTgggTgggSggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whThhhhhrgggggrhhhhhThw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgwwwgrhhhhhhhw
+whhhhhhhhgwwwghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhrgggggrhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+whhhhhhhhggggghhhhhhhhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level40
+# STRONGPOINTS — hardened strongpoints anchor the enemy line.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwww
+wgggggggggggggggggw
+wgggSggggRggggSgggw
+wgggggggggggggggggw
+wggSgggTgggTgggSggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggwwwwwgggwwwwwggw
+wggwgggwgggwgggwggw
+wggwgTgwgggwgTgwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggwwwwwggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggwwwwwgggwwwwwggw
+wggwgggwgggwgggwggw
+wggwgTgwgggwgTgwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggggPggggggggw
+wgggggggggggggggggw
+wggggggggBggggggggw
+wgggggggggggggggggw
+wwwwwwwwwwwwwwwwwww
+
+=== level41
+# FOUR CORNERS — four walled corners around a sunken crossing.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggggggrrrggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggwwwgglllggwwwgggw
+wgggwwwgglllggwwwgggw
+wgggTgggglllggggTgggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgrlllrlllllllrlllrgw
+wgrlllllllllllllllrgw
+wgrlllrlllllllrlllrgw
+wgggggggglllggggggggw
+wgggwwwgglllggwwwgggw
+wgggwwwgglllggwwwgggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wgggggggglllggggggggw
+wggggggggrrrggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level42
+# THE PODIUM — a stepped podium with turrets on top.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwgggggggwwwgggw
+wgggwwwgggggggwwwgggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggghhrrrhhggggggw
+wgggggghhThhThggggggw
+wggggggrhhhhhrggggggw
+wgggggghhhhhhhggggggw
+wgggggghhrrrhhggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wgggwwwgggggggwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level43
+# WAREHOUSE ROW — long warehouse walls make cover — and ambushes.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwww
+wgggggggggggggggggw
+wgggSggggRggggSgggw
+wgggggggggggggggggw
+wggSgggTgggTgggSggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggwwwwgggwwwwgggw
+wgggwwwwgggwwwwgggw
+wgggggggggggggggggw
+wggTgggggggggggTggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggwwwwgggwwwwgggw
+wgggwwwwgggwwwwgggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggwwwwgggwwwwgggw
+wgggwwwwgggwwwwgggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggggPggggggggw
+wgggggggggggggggggw
+wggggggggBggggggggw
+wgggggggggggggggggw
+wwwwwwwwwwwwwwwwwww
+
+=== level44
+# GULCH — a narrow gulch with turret nests dug into the high walls.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhggrrrrrgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhrgglllllggrhhhhw
+whhhhhgglllllgghhhhhw
+whThhhgrlllllrghhhThw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgrlllllrghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgrlllllrghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhrgglllllggrhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhgglllllgghhhhhw
+whhhhhggrrrrrgghhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level45
+# ESCARPMENT — sheer escarpments split the field into tiers.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhThhggghhThhhhhw
+whhhhrrhhggghhrrhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggghhThhhhhhhThhgggw
+wggghrrhhhhhhhrrhgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level46
+# REDOUBT — a dug-in redoubt ringed by moat and gun positions.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhShhhhRhhhhShhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhhhThhhhhThhhhhhhw
+whhhhhhhhhhhhhhhhhhhhhw
+whhhhhThhhhhhhhhThhhhhw
+whrhhhhhrrhhhrrhhhhhrhw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wglrgrllllrgrllllrgrlgw
+wglrgrllllrgrllllrgrlgw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggwwwwwggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggwwwgggggggggwwwgggw
+wgggwwwgggggggggwwwgggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level47
+# SAPPER FIELD — engineer trenches zigzag between the bases.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwgggggggggwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wllllllllrrrllllllllw
+wlllllllllllllllllllw
+wllllllllrrrllllllllw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wlrrlllllllllllllrrlw
+wlllllllllllllllllllw
+wlrrlllllllllllllrrlw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggggTgggggggggTggggw
+wggwwwgggggggggwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level48
+# THE SHALLOWS — shallow sinks and islands break up the open water line.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgglrrllllgllllrrlggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wggllllllrgrllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglrgTlllglllgTrlggw
+wgglrgglllglllggrlggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wggllllllrgrllllllggw
+wgglllllllglllllllggw
+wgglllllllglllllllggw
+wgglrrllllgllllrrlggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level49
+# UPLANDS — rolling uplands with ramp passes and gun nests.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whThhhhrgggggrhhhhThw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhrgwwwgrhhhhhhw
+whhhhhhhgwwwghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhrgggggrhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+whhhhhhhggggghhhhhhhw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level50
+# THE GARRISON — the garrison district: walls, pockets and crossfire.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwww
+wgggggggggggggggggw
+wgggSggggRggggSgggw
+wgggggggggggggggggw
+wggSgggTgggTgggSggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggwwwwwgggwwwwwggw
+wggwgggwgggwgggwggw
+wggwgTgwgggwgTgwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggwwwwwggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggwwwwwgggwwwwwggw
+wggwgggwgggwgggwggw
+wggwgTgwgggwgTgwggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wgggggggggggggggggw
+wggggggggPggggggggw
+wgggggggggggggggggw
+wggggggggBggggggggw
+wgggggggggggggggggw
+wwwwwwwwwwwwwwwwwww
+
+=== level51
+# GRIDLOCK — gridlocked streets and ditches slow every advance.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggw
+wgggggSggggRggggSgggggw
+wgggggggggggggggggggggw
+wggggSgggTgggTgggSggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggrrrgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggTgggglllggggTggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgrllllrlllllllrllllrgw
+wgrlllllllllllllllllrgw
+wgrllllrlllllllrllllrgw
+wggggggggglllgggggggggw
+wgggwwwggglllgggwwwgggw
+wgggwwwggglllgggwwwgggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wggggggggglllgggggggggw
+wgggggggggrrrgggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wgggggggggggggggggggggw
+wggggggggggPggggggggggw
+wgggggggggggggggggggggw
+wggggggggggBggggggggggw
+wgggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwww
+
+=== level52
+# COLOSSEUM — an arena floor ringed by walls; the summit is the prize.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggw
+wggggSggggRggggSggggw
+wgggggggggggggggggggw
+wgggSgggTgggTgggSgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggwwwgggggggwwwgggw
+wgggwwwgggggggwwwgggw
+wggwwwwgggggggwwwwggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggghhrrrhhggggggw
+wgggggghhThhThggggggw
+wggggggrhhhhhrggggggw
+wgggggghhrrrhhggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wggwwwwgggggggwwwwggw
+wgggwwwgggggggwwwgggw
+wgggwwwgggggggwwwgggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggggggggggggw
+wgggggggggPgggggggggw
+wgggggggggggggggggggw
+wgggggggggBgggggggggw
+wgggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwww
+
+=== level53
+# GRAND BOULEVARD — XL 5v5 arena: a broad boulevard between the bases, sunken side roads and twin high plazas.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggggggggggw
+wggggSggggSggggRggggSggggSggggw
+wgggggggggggggggggggggggggggggw
+wggggggggTgggggSgggggTggggggggw
+wgggggggggggggggggggggggggggggw
+wgggggggggggTgggggTgggggggggggw
+wgggggggggggggggggggggggggggggw
+wgggwwwwwgggggggggggggwwwwwgggw
+wgggwwwwwgggggggggggggwwwwwgggw
+wgggggggggggggggggggggggggggggw
+wgrrgggggggggggggggggggggggrrgw
+wgllgggggggggggggggggggggggllgw
+wgllgggggggggggggggggggggggllgw
+wgllwwwgggggggggggggggggwwwllgw
+wgllwwwgggggggggggggggggwwwllgw
+wgllgggggggggggggggggggggggllgw
+wgllgggggrrrgggggggrrrgggggllgw
+wgllgggghhhhhggggghhhhhggggllgw
+wgllgggghhThhggggghhThhggggllgw
+wgllgggghhhhhggggghhhhhggggllgw
+wgllrggghhhhhgwwwghhhhhgggrllgw
+wgllrggghhhhhgwwwghhhhhgggrllgw
+wgllrggghhhhhgwwwghhhhhgggrllgw
+wgllgggghhhhhggggghhhhhggggllgw
+wgllgggghhhhhggggghhhhhggggllgw
+wgllgggghhhhhggggghhhhhggggllgw
+wgllgggggrrrgggggggrrrgggggllgw
+wgllgggggggggggggggggggggggllgw
+wgllgggggggggggggggggggggggllgw
+wgllwwwwwgggggggggggggwwwwwllgw
+wgllwwwwwgggggggggggggwwwwwllgw
+wgllgggggggggggggggggggggggllgw
+wgrrgggggggggggggggggggggggrrgw
+wgggggggggggggggggggggggggggggw
+wgggwwwgggggggggggggggggwwwgggw
+wgggwwwgggggggggggggggggwwwgggw
+wgggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggw
+wggggggggggggggPggggggggggggggw
+wgggggggggggggggggggggggggggggw
+wggggggggggggggBggggggggggggggw
+wgggggggggggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+=== level54
+# TWIN CANYONS — XL 5v5 arena: two sunken canyons flank a fortified mesa; fight for the rims.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggggggggggggggw
+wgggggggSggggSgggRgggSggggSgggggggw
+wgggggggggggggggggggggggggggggggggw
+wggwwwwggggggggggSggggggggggwwwwggw
+wgggggggggggggggggggggggggggggggggw
+wggggggggggTgggggggggggTggggggggggw
+wgggggggrrrrgggggggggggrrrrgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllggggrrrggggllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllrgghThThggrllllgggggggw
+wgggggggllllrgghhhhhggrllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggwwggllllgTghhhhhgTgllllggwwgggw
+wgggwwggllllggghhhhhgggllllggwwgggw
+wgggwwggllllggrhhhhhrggllllggwwgggw
+wgggwwggllllggrhhhhhrggllllggwwgggw
+wgggwwggllllggrhhhhhrggllllggwwgggw
+wgggwwggllllggghhhhhgggllllggwwgggw
+wgggwwggllllggghhhhhgggllllggwwgggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllrgghhhhhggrllllgggggggw
+wgggggggllllrgghhhhhggrllllgggggggw
+wgggggggllllggghhhhhgggllllgggggggw
+wgggggggllllggggrrrggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggllllgggggggggggllllgggggggw
+wgggggggrrrrgggggggggggrrrrgggggggw
+wgggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggw
+wggwwwwggggggggggPggggggggggwwwwggw
+wgggggggggggggggggggggggggggggggggw
+wggggggggggggggggBggggggggggggggggw
+wgggggggggggggggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+=== level55
+# HIGHLAND FRONT — XL 5v5 arena: massive highlands overlook the valley road between the bases.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggggggggggggggggw
+wgggggSggggSggggggRggggggSggggSgggggw
+wgggggggggggggggggggggggggggggggggggw
+wggggggggggggggTggSggTggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhrgggggggggrhhhhhhhhhhhgw
+wghhhhhhhhhhhrgggggggggrhhhhhhhhhhhgw
+wghhhwwwwhhhhhggggggggghhhhhwwwwhhhgw
+wghhhwwwwhhhhhggggggggghhhhhwwwwhhhgw
+wghhhwwwwhhhhhggggggggghhhhhwwwwhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhThgggwwwggghThhhhhhhhhhgw
+wghhhhhhhhhhhhgggwwwggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhrgggggggggrhhhhhhhhhhhgw
+wghhhhhhhhhhhrgggggggggrhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhgggwwwggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhgggwwwggghhhhhhhhhhhhgw
+wghhhhhhhhhhThggggggggghThhhhhhhhhhgw
+wghhhwwwwhhhhhggggggggghhhhhwwwwhhhgw
+wghhhwwwwhhhhhggggggggghhhhhwwwwhhhgw
+wghhhwwwwhhhhhggggggggghhhhhwwwwhhhgw
+wghhhhhhhhhhhrgggggggggrhhhhhhhhhhhgw
+wghhhhhhhhhhhrgggggggggrhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wghhhhhhhhhhhhggggggggghhhhhhhhhhhhgw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggPgggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggBgggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+=== level56
+# THE WARZONE — XL 5v5 arena: trench lines, bunkers and a central strongpoint. The biggest battlefield.
+# Terrain:  g ground · l low ground · h high ground · w wall · r ramp (slopes between its neighbours)
+# Markers:  P player spawn · B blue base · R red base · T red turret · S enemy wave spawn
+#           (a marker sits on the same terrain as the tile to its left)
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggSgggggSgggggRgggggSgggggSgggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggTgggggggSgggggggTgggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggTgggggggTgggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggwwwwggggwwwwgggggwwwwggggwwwwgggggw
+wgggggwwwwggggwwwwgggggwwwwggggwwwwgggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wglllllrrllllllllllrrrllllllllllrrlllllgw
+wglllllllllllllllllllllllllllllllllllllgw
+wglllllrrllllllllllrrrllllllllllrrlllllgw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggTgggggggggggTgggggggggggggw
+wgggwwwwgggggggggggggggggggggggggwwwwgggw
+wgggwwwwgggggggggggrrrgggggggggggwwwwgggw
+wggggggggggggggghhhhhhhhhgggggggggggggggw
+wggggggggggggggghThhhhhThgggggggggggggggw
+wggggggggggggggrhhhhhhhhhrggggggggggggggw
+wgggggggggwwwggrhhhhhhhhhrggwwwgggggggggw
+wgggggggggwwwggrhhhhhhhhhrggwwwgggggggggw
+wggggggggggggggghhhhhhhhhgggggggggggggggw
+wggggggggggggggghhhhhhhhhgggggggggggggggw
+wgggwwwwgggggggggggrrrgggggggggggwwwwgggw
+wgggwwwwgggggggggggggggggggggggggwwwwgggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wglllllrrllllllllllrrrllllllllllrrlllllgw
+wglllllllllllllllllllllllllllllllllllllgw
+wglllllrrllllllllllrrrllllllllllrrlllllgw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggwwwwggggwwwwgggggwwwwggggwwwwgggggw
+wgggggwwwwggggwwwwgggggwwwwggggwwwwgggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggPgggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wgggggggggggggggggggBgggggggggggggggggggw
+wgggggggggggggggggggggggggggggggggggggggw
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
