@@ -42,7 +42,7 @@ Then open [http://localhost:8080](http://localhost:8080), pick a difficulty, and
 
 ## Multiplayer
 
-Hit **MULTIPLAYER** on the start screen, give yourself a callsign, and enter the lobby. Pick a side — **JOIN BLUE** or **JOIN RED**, up to **5 pilots per team** — and once both teams have at least one pilot, anyone on a team can hit **START MATCH**. Everyone drops into the starter's currently selected level (the XL maps at the end of the level list are sized for full 5v5 battles).
+Hit **MULTIPLAYER** on the start screen, give yourself a callsign, and enter the lobby. Matches are staged in **rooms**: create one or join one from the list — each room runs its own match, so several groups can fight in parallel on one server. Inside a room, pick a side — **JOIN BLUE** or **JOIN RED**, up to **5 pilots per team** — and once both teams have at least one pilot, anyone on a team can hit **START MATCH**. Everyone in the room drops into the starter's currently selected level (the XL maps at the end of the level list are sized for full 5v5 battles).
 
 It's a symmetric team base assault, from 1v1 up to 5v5: blue deploys around the usual player spawn, red around the enemy end's wave-spawn points. No AI waves, no pre-placed turrets — each pilot earns salvage (fixed +3/s, plus kill bounties for the whole team), builds their own defenses, and the match is won by destroying the other team's base. If you're destroyed you redeploy at your base after a few seconds, so the base is the only thing that decides the match.
 

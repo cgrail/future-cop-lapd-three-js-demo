@@ -312,6 +312,21 @@ body.touch #ctrlRow { display: flex; }
 #matchInfo .vs { font-size: 18px; font-weight: 800; letter-spacing: 3px; color: #ffd23c; }
 #matchInfo .sub { font-size: 12px; letter-spacing: 1px; color: #8a92ad; margin-top: 6px; }
 
+/* room browser: create button + one row per room */
+#mpRooms { display: flex; flex-direction: column; gap: 10px; width: min(440px, 86vw); }
+#overlay #mpCreateBtn { font-size: 13px; letter-spacing: 2px; padding: 10px 18px; align-self: center; }
+#mpRoomList {
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: 40vh; overflow-y: auto; padding-right: 6px;
+  touch-action: pan-y; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: #3a4468 transparent;
+}
+#mpRoomBar {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  width: min(560px, 86vw);
+}
+#mpRoomName { font-size: 14px; font-weight: 800; letter-spacing: 2px; color: #ffd23c; }
+
 /* team pick: two rosters side by side */
 #mpTeams { display: flex; gap: 14px; width: min(560px, 86vw); }
 .mpTeam {

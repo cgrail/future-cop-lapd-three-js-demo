@@ -12,13 +12,19 @@
    entities (player, turrets) and the server just relays events
    among the clients of a match (up to 5 per team, 10 total).
 
-   Lobby protocol (JSON):
+   Lobby protocol (JSON) — matches are staged in rooms, so several
+   groups can set up and fight in parallel:
      → join {name, level}            ← joined {id,name} | error {message}
-                                     ← lobby {players:[{id,name,team}]}
-     → team {team:blue|red|null}     ← lobby (roster update) | error (team full)
+                                     ← lobby {rooms:[{id,name,count}],
+                                         players:[{id,name,room,team}]}
+     → createRoom                    ← lobby (creator auto-joins) | error
+     → joinRoom {roomId}             ← lobby | error (room gone/full)
+     → leaveRoom                     ← lobby
+     → team {team:blue|red|null}     ← lobby | error (team full)  — in a room
      → startMatch                    ← matchStart {matchId,token,playerId,team,
                                          level,roster:[{id,name,team}]}
-                                       (to everyone on a team; the starter's level)
+                                       (to everyone on a team in the starter's
+                                        room; the starter's level is played)
    Match protocol (players reload into ?mp=1, then):
      → rejoin {matchId, token}       ← rejoined {playerId,team,level,roster} | error
                                      ← peerJoined {id,name}  (to the others)
@@ -119,9 +125,13 @@ const wss = new WebSocketServer({ server, path: '/ws', maxPayload: 4096 });
 wss.on('error', (err) => console.error('wss error:', err.message));
 
 const TEAM_MAX = 5;        // players per side
+const ROOM_MAX = 12;       // members per room (a full 5v5 plus a few undecided)
+const MAX_ROOMS = 50;      // caps room-spam from a hostile client
 
 let nextId = 1;
-const lobby = new Map();   // id -> {id, ws, name, level, team}
+let nextRoomId = 1;
+const lobby = new Map();   // id -> {id, ws, name, level, room, team}
+const rooms = new Map();   // id -> {id, name} — exists while it has members
 const matches = new Map(); // id -> {id, level, created, started, slots:[{token, pid, team, name, ws, ready, connected, abandoned}]}
 const ipConns = new Map(); // ip -> open connection count
 
@@ -131,9 +141,21 @@ const send = (ws, obj) => {
   ws.send(JSON.stringify(obj));
 };
 
+const roomCount = (id) => [...lobby.values()].filter((c) => c.room === id).length;
+
+function leaveRoom(c) {
+  const id = c.room;
+  c.room = null;
+  c.team = null;
+  if (id != null && rooms.has(id) && roomCount(id) === 0) rooms.delete(id);
+}
+
 function roster() {
-  const players = [...lobby.values()].map((c) => ({ id: c.id, name: c.name, team: c.team }));
-  for (const c of lobby.values()) send(c.ws, { type: 'lobby', players });
+  const players = [...lobby.values()].map((c) => ({ id: c.id, name: c.name, room: c.room, team: c.team }));
+  const rms = [...rooms.values()].map((r) => ({
+    id: r.id, name: r.name, count: players.filter((p) => p.room === r.id).length,
+  }));
+  for (const c of lobby.values()) send(c.ws, { type: 'lobby', rooms: rms, players });
 }
 
 /* names end up in client DOM/HTML — keep them to a harmless charset */
@@ -144,6 +166,7 @@ const cleanLevel = (l) => String(l ?? '1').replace(/[^\w\-]/g, '').slice(0, 32) 
 function dropFromLobby(c) {
   if (!lobby.has(c.id)) return;
   lobby.delete(c.id);
+  leaveRoom(c); // after the delete, so the room count no longer includes them
   roster();
 }
 
@@ -228,7 +251,7 @@ wss.on('connection', (ws, req) => {
         const client = {
           id: nextId++, ws, name,
           level: cleanLevel(msg.level), // the level this player has loaded; used if they start the match
-          team: null,
+          room: null, team: null,
         };
         lobby.set(client.id, client);
         ws.client = client;
@@ -237,11 +260,41 @@ wss.on('connection', (ws, req) => {
         break;
       }
 
-      case 'team': { // pick a side (or null to step back off the roster)
-        if (!c) return;
+      case 'createRoom': {
+        if (!c || c.room != null) return;
+        if (rooms.size >= MAX_ROOMS) {
+          send(ws, { type: 'error', message: 'THE SERVER IS FULL OF ROOMS — JOIN ONE INSTEAD' });
+          return;
+        }
+        const room = { id: nextRoomId++, name: `${c.name.toUpperCase()}'S ROOM` };
+        rooms.set(room.id, room);
+        c.room = room.id;
+        roster();
+        break;
+      }
+
+      case 'joinRoom': {
+        if (!c || c.room != null) return;
+        const room = rooms.get(msg.roomId);
+        if (!room) { send(ws, { type: 'error', message: 'THAT ROOM IS GONE' }); return; }
+        if (roomCount(room.id) >= ROOM_MAX) { send(ws, { type: 'error', message: 'THAT ROOM IS FULL' }); return; }
+        c.room = room.id;
+        roster();
+        break;
+      }
+
+      case 'leaveRoom': {
+        if (!c || c.room == null) return;
+        leaveRoom(c);
+        roster();
+        break;
+      }
+
+      case 'team': { // pick a side within my room (or null to step back off the roster)
+        if (!c || c.room == null) return;
         const team = msg.team === 'blue' || msg.team === 'red' ? msg.team : null;
         if (team && team !== c.team
-          && [...lobby.values()].filter((o) => o.team === team).length >= TEAM_MAX) {
+          && [...lobby.values()].filter((o) => o.room === c.room && o.team === team).length >= TEAM_MAX) {
           send(ws, { type: 'error', message: `THE ${team.toUpperCase()} TEAM IS FULL` });
           return;
         }
@@ -251,8 +304,9 @@ wss.on('connection', (ws, req) => {
       }
 
       case 'startMatch': {
-        if (!c || !c.team) return;
-        const fighters = [...lobby.values()].filter((o) => o.team);
+        if (!c || c.room == null || !c.team) return;
+        const roomId = c.room;
+        const fighters = [...lobby.values()].filter((o) => o.room === roomId && o.team);
         const blue = fighters.filter((o) => o.team === 'blue').length;
         if (!blue || blue === fighters.length) {
           send(ws, { type: 'error', message: 'BOTH TEAMS NEED AT LEAST ONE PILOT' });
@@ -270,7 +324,9 @@ wss.on('connection', (ws, req) => {
         };
         matches.set(match.id, match);
         const players = match.slots.map((s) => ({ id: s.pid, name: s.name, team: s.team }));
-        // everyone on a team now reloads into the match — drop them from the lobby
+        // everyone on a team in this room now reloads into the match —
+        // drop them from the lobby; the room lives on for any undecided
+        // members, or dies with its last fighter
         for (const s of match.slots) {
           const o = lobby.get(s.pid);
           send(o.ws, {
@@ -280,6 +336,7 @@ wss.on('connection', (ws, req) => {
           o.ws.client = null;
           lobby.delete(o.id);
         }
+        if (roomCount(roomId) === 0) rooms.delete(roomId);
         roster();
         break;
       }

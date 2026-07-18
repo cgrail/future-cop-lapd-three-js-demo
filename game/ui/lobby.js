@@ -5,13 +5,15 @@ import { startGame, backToLobby } from '../core/flow.js';
 import { audioCtx } from '../systems/audio.js';
 
 /* ============================================================
-   Multiplayer UI — team lobby, up to 5 v 5
+   Multiplayer UI — rooms of team matches, up to 5 v 5
 
-   Lobby (from the mode select): pick a callsign → join → pick a
-   team (blue or red, max 5 per side) → once both teams have at
-   least one pilot, anyone on a team can START MATCH. The server
-   deals out match credentials and every rostered player reloads
-   into ?level=<starter's level>&mp=1 (see net.js).
+   Lobby (from the mode select): pick a callsign → join → create a
+   room or join one from the list → pick a team (blue or red, max
+   5 per side) → once both teams have at least one pilot, anyone
+   on a team can START MATCH. Rooms are independent: each stages
+   its own match, so several groups can fight in parallel. The
+   server deals out match credentials and every rostered player
+   reloads into ?level=<starter's level>&mp=1 (see net.js).
 
    Match boot (?mp=1): reconnect, rejoin by token, then a READY
    handshake so the fight starts for everyone at once.
@@ -24,6 +26,12 @@ const nameRow = document.getElementById('mpNameRow');
 const nameInput = document.getElementById('mpNameInput');
 const joinBtn = document.getElementById('mpJoinBtn');
 const bannerEl = document.getElementById('mpBanner');
+const roomsEl = document.getElementById('mpRooms');
+const roomListEl = document.getElementById('mpRoomList');
+const createBtn = document.getElementById('mpCreateBtn');
+const roomBar = document.getElementById('mpRoomBar');
+const roomNameEl = document.getElementById('mpRoomName');
+const leaveBtn = document.getElementById('mpLeaveBtn');
 const teamsEl = document.getElementById('mpTeams');
 const listEl = document.getElementById('mpList');
 const startBtn = document.getElementById('mpStartBtn');
@@ -132,11 +140,12 @@ if (MP.active) {
 ============================================================ */
 let myId = null;
 let myName = '';
+let myRoom = null;
 let myTeam = null;
 let joined = false;
 let autoJoin = false;    // returning from a match: rejoin with the saved name
 let manualClose = false; // BACK pressed: the socket close is expected
-let lastPlayers = [];
+let lastState = { players: [], rooms: [] };
 
 nameInput.value = localStorage.getItem('mechMpName') || '';
 
@@ -158,8 +167,11 @@ function showMpScreen(open) {
 function resetLobbyUi() {
   joined = false;
   myId = null;
+  myRoom = null;
   myTeam = null;
   show(nameRow, false);
+  show(roomsEl, false);
+  show(roomBar, false);
   show(teamsEl, false);
   show(listEl, false);
   show(startBtn, false);
@@ -185,26 +197,91 @@ function infoBanner(text) {
   infoTimer = setTimeout(clearBanner, 3000);
 }
 
-function renderList(players) {
-  lastPlayers = players;
+/* the "who else is here" strip under the main list */
+function renderIdle(list, label) {
+  listEl.textContent = '';
+  if (list.length) {
+    const row = document.createElement('div');
+    row.className = 'mpRow';
+    const n = document.createElement('span');
+    n.className = 'name';
+    n.textContent = label;
+    const st = document.createElement('span');
+    st.className = 'st';
+    st.textContent = list.map((p) => p.name).join(' · ');
+    row.append(n, st);
+    listEl.appendChild(row);
+  }
+  show(listEl, !!list.length);
+}
+
+function renderList(state) {
+  lastState = state;
   if (!joined) return;
+  const { players, rooms } = state;
   const me = players.find((p) => p.id === myId);
+  myRoom = me ? me.room : null;
   myTeam = me ? me.team : null;
+
+  show(roomsEl, myRoom == null);
+  show(roomBar, myRoom != null);
+  show(teamsEl, myRoom != null);
+  show(startBtn, myRoom != null);
+
+  /* ---------- room browser ---------- */
+  if (myRoom == null) {
+    roomListEl.textContent = '';
+    for (const r of rooms) {
+      const row = document.createElement('div');
+      row.className = 'mpRow';
+      const n = document.createElement('span');
+      n.className = 'name';
+      n.textContent = r.name;
+      const st = document.createElement('span');
+      st.className = 'st';
+      st.textContent = `${r.count} PILOT${r.count === 1 ? '' : 'S'}`;
+      const b = document.createElement('button');
+      b.textContent = 'JOIN';
+      b.addEventListener('click', () => send({ type: 'joinRoom', roomId: r.id }));
+      row.append(n, st, b);
+      roomListEl.appendChild(row);
+    }
+    if (!rooms.length) {
+      const row = document.createElement('div');
+      row.className = 'mpRow';
+      const n = document.createElement('span');
+      n.className = 'name';
+      n.textContent = 'NO ROOMS YET';
+      const st = document.createElement('span');
+      st.className = 'st';
+      st.textContent = 'CREATE THE FIRST ONE';
+      row.append(n, st);
+      roomListEl.appendChild(row);
+    }
+    renderIdle(players.filter((p) => p.room == null && p.id !== myId), 'BROWSING');
+    setStatus('CREATE A ROOM OR JOIN ONE — EACH ROOM STAGES ITS OWN MATCH');
+    return;
+  }
+
+  /* ---------- inside a room ---------- */
+  const room = rooms.find((r) => r.id === myRoom);
+  roomNameEl.textContent = room ? room.name : 'ROOM';
+  const members = players.filter((p) => p.room === myRoom);
 
   for (const team of ['blue', 'red']) {
     const col = document.getElementById(team === 'blue' ? 'mpTeamBlue' : 'mpTeamRed');
     const list = col.querySelector('.tList');
     const btn = col.querySelector('button');
-    const members = players.filter((p) => p.team === team);
-    col.querySelector('.tHead').textContent = `${team.toUpperCase()} TEAM ${members.length}/${TEAM_MAX}`;
+    const teamed = members.filter((p) => p.team === team);
+    col.querySelector('.tHead').textContent = `${team.toUpperCase()} TEAM ${teamed.length}/${TEAM_MAX}`;
     list.textContent = '';
-    for (const p of members) {
+    for (const p of teamed) {
       const row = document.createElement('div');
       row.className = 'tSlot' + (p.id === myId ? ' me' : '');
       row.textContent = p.id === myId ? `${p.name} (YOU)` : p.name;
       list.appendChild(row);
     }
-    for (let i = members.length; i < TEAM_MAX; i++) {
+    for (let i = teamed.length; i < TEAM_MAX; i++) {
       const row = document.createElement('div');
       row.className = 'tSlot empty';
       row.textContent = 'OPEN SLOT';
@@ -215,33 +292,18 @@ function renderList(players) {
       btn.disabled = false;
     } else {
       btn.textContent = `JOIN ${team.toUpperCase()}`;
-      btn.disabled = members.length >= TEAM_MAX;
+      btn.disabled = teamed.length >= TEAM_MAX;
     }
   }
 
-  // pilots in the lobby who haven't picked a side yet
-  const unassigned = players.filter((p) => !p.team);
-  listEl.textContent = '';
-  if (unassigned.length) {
-    const row = document.createElement('div');
-    row.className = 'mpRow';
-    const n = document.createElement('span');
-    n.className = 'name';
-    n.textContent = 'IN LOBBY';
-    const st = document.createElement('span');
-    st.className = 'st';
-    st.textContent = unassigned.map((p) => p.name).join(' · ');
-    row.append(n, st);
-    listEl.appendChild(row);
-  }
-  show(listEl, !!unassigned.length);
+  renderIdle(members.filter((p) => !p.team), 'IN THIS ROOM');
 
-  const blue = players.filter((p) => p.team === 'blue').length;
-  const red = players.filter((p) => p.team === 'red').length;
+  const blue = members.filter((p) => p.team === 'blue').length;
+  const red = members.filter((p) => p.team === 'red').length;
   startBtn.disabled = !myTeam || !blue || !red;
   if (!myTeam) setStatus('PICK A TEAM — BLUE OR RED');
   else if (!blue || !red) setStatus('WAITING FOR PILOTS ON THE OTHER TEAM…');
-  else setStatus(`READY — STARTING PLAYS YOUR LEVEL (${levelName.toUpperCase()}) FOR EVERYONE`);
+  else setStatus(`READY — STARTING PLAYS YOUR LEVEL (${levelName.toUpperCase()}) FOR EVERYONE IN THE ROOM`);
 }
 
 function onOpen() {
@@ -271,6 +333,8 @@ if (!MP.active) {
     e.stopPropagation(); // keep game key handling out of the text field
     if (e.key === 'Enter') doJoin();
   });
+  createBtn.addEventListener('click', () => send({ type: 'createRoom' }));
+  leaveBtn.addEventListener('click', () => send({ type: 'leaveRoom' }));
   for (const btn of teamsEl.querySelectorAll('button')) {
     btn.addEventListener('click', () => {
       // clicking my own team's button steps back off the roster
@@ -292,13 +356,10 @@ if (!MP.active) {
     myName = m.name;
     joined = true;
     localStorage.setItem('mechMpName', m.name);
-    setStatus('PICK A TEAM — BLUE OR RED');
     show(nameRow, false);
-    show(teamsEl, true);
-    show(startBtn, true);
-    renderList(lastPlayers);
+    renderList(lastState); // the server's lobby broadcast follows right behind
   });
-  on('lobby', (m) => renderList(m.players));
+  on('lobby', (m) => renderList({ players: m.players, rooms: m.rooms }));
 
   on('matchStart', (m) => {
     sessionStorage.setItem('mechMpMatch', JSON.stringify({
