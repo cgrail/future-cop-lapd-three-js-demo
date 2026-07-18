@@ -42,9 +42,9 @@ Then open [http://localhost:8080](http://localhost:8080), pick a difficulty, and
 
 ## Multiplayer
 
-Hit **MULTIPLAYER** on the start screen, give yourself a callsign, and enter the lobby. Every pilot on the server shows up in the list — pick one and **CHALLENGE** them. They get an accept/decline prompt; on accept, both of you drop into the challenger's currently selected level.
+Hit **MULTIPLAYER** on the start screen, give yourself a callsign, and enter the lobby. Pick a side — **JOIN BLUE** or **JOIN RED**, up to **5 pilots per team** — and once both teams have at least one pilot, anyone on a team can hit **START MATCH**. Everyone drops into the starter's currently selected level (the XL maps at the end of the level list are sized for full 5v5 battles).
 
-It's a symmetric 1-v-1 base assault: the challenger fights for the blue team from the usual spawn, the challenged pilot fights for red from the enemy end. No AI waves, no pre-placed turrets — you earn salvage (fixed +3/s, plus kill bounties), build your own defenses, and win by destroying the other player's base. If you're destroyed you redeploy at your base after a few seconds, so the base is the only thing that decides the match.
+It's a symmetric team base assault, from 1v1 up to 5v5: blue deploys around the usual player spawn, red around the enemy end's wave-spawn points. No AI waves, no pre-placed turrets — each pilot earns salvage (fixed +3/s, plus kill bounties for the whole team), builds their own defenses, and the match is won by destroying the other team's base. If you're destroyed you redeploy at your base after a few seconds, so the base is the only thing that decides the match.
 
 To play across machines, friends open `http://<your-ip>:8080` — the game connects its WebSocket to whatever host serves it (or override with `?server=host:port`).
 
@@ -74,7 +74,7 @@ Everything is tuned with optional env vars:
 | `TRUST_PROXY` | off | Set to `1` behind a reverse proxy: client IPs are read from `X-Forwarded-For` (for the per-IP cap) and HSTS is sent on HTTPS |
 | `ALLOWED_ORIGINS` | — | Extra WebSocket origins, comma-separated (e.g. `https://mygame.github.io`). Same-origin as the served page is always allowed |
 | `MAX_CLIENTS` | `200` | Total simultaneous WebSocket connections |
-| `MAX_CONNS_PER_IP` | `8` | Connections per client address |
+| `MAX_CONNS_PER_IP` | `16` | Connections per client address (a full 10-player match may sit behind one NAT) |
 
 Notes:
 

@@ -28,17 +28,43 @@ export function aimYOf(e) {
   return e.group.position.y + Math.min(3.5, e.hitHeight * 0.55);
 }
 
-/* where a player mech deploys, per team (multiplayer gives each side one).
-   Blue uses the level's P marker; red uses the first enemy-wave S marker,
-   falling back to just in front of the red base. `face` is what the mech
-   should look at on spawn (the enemy base). */
-export function spawnPointFor(team) {
-  if (team === 'blue') return { pos: LEVEL.playerSpawn, face: LEVEL.redBase };
-  const s = LEVEL.enemySpawns[0];
-  if (s) return { pos: s, face: LEVEL.blueBase };
+/* fan teammates out around a shared spawn marker: idx 0 is the marker
+   itself, higher indices take the idx-th nearby spot on the same terrain
+   height. Deterministic, so every client places every player identically. */
+const SPAWN_RING = [[-7, 0], [7, 0], [0, 7], [-7, 7], [7, 7], [0, -7], [-7, -7], [7, -7]];
+function offsetSpawn(p, idx) {
+  if (!idx) return p;
+  const h = groundHeightAt(p.x, p.z);
+  let n = 0;
+  for (const [ox, oz] of SPAWN_RING) {
+    const q = { x: p.x + ox, z: p.z + oz };
+    if (Math.abs(groundHeightAt(q.x, q.z) - h) < 0.5 && ++n === idx) return q;
+  }
+  return p; // every spot taken/invalid — mech separation will nudge them apart
+}
+
+/* where a player mech deploys: team + index within that team (multiplayer
+   teams hold up to 5 players). Blue fans out around the level's P marker;
+   red rotates through the enemy-wave S markers, falling back to just in
+   front of the red base. `face` is what the mech should look at on spawn
+   (the enemy base). */
+export function spawnPointFor(team, idx = 0) {
+  if (team === 'blue') return { pos: offsetSpawn(LEVEL.playerSpawn, idx), face: LEVEL.redBase };
+  const s = LEVEL.enemySpawns;
+  if (s.length) {
+    return { pos: offsetSpawn(s[idx % s.length], Math.floor(idx / s.length)), face: LEVEL.blueBase };
+  }
   const rb = LEVEL.redBase, bb = LEVEL.blueBase;
   const d = Math.hypot(bb.x - rb.x, bb.z - rb.z) || 1;
-  return { pos: { x: rb.x + (bb.x - rb.x) / d * 16, z: rb.z + (bb.z - rb.z) / d * 16 }, face: bb };
+  const p = { x: rb.x + (bb.x - rb.x) / d * 16, z: rb.z + (bb.z - rb.z) / d * 16 };
+  return { pos: offsetSpawn(p, idx), face: bb };
+}
+
+/* my position within my team's roster (0 in single player), used to pick
+   a spawn spot that no teammate occupies */
+export function teamIndexOf(playerId, team, roster) {
+  return Math.max(0, roster.filter((p) => p.team === team)
+    .sort((a, b) => a.id - b.id).findIndex((p) => p.id === playerId));
 }
 
 /* 3D line of sight: blocked where the ray dips into terrain or walls.

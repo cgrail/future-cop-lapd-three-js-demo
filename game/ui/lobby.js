@@ -2,18 +2,19 @@ import { MP, connect, disconnect, connected, on, send } from '../net/net.js';
 import { game } from '../core/state.js';
 import { levelName } from '../world/world.js';
 import { startGame, backToLobby } from '../core/flow.js';
-import { audioCtx, beep } from '../systems/audio.js';
+import { audioCtx } from '../systems/audio.js';
 
 /* ============================================================
-   Multiplayer UI
+   Multiplayer UI — team lobby, up to 5 v 5
 
-   Lobby (from the mode select): pick a callsign → join → see other
-   pilots → challenge one / answer a challenge. On accept the server
-   deals out match credentials and both clients reload into
-   ?level=<challenger's level>&mp=1 (see net.js).
+   Lobby (from the mode select): pick a callsign → join → pick a
+   team (blue or red, max 5 per side) → once both teams have at
+   least one pilot, anyone on a team can START MATCH. The server
+   deals out match credentials and every rostered player reloads
+   into ?level=<starter's level>&mp=1 (see net.js).
 
    Match boot (?mp=1): reconnect, rejoin by token, then a READY
-   handshake so the fight starts for both players at once.
+   handshake so the fight starts for everyone at once.
 ============================================================ */
 const modeScreen = document.getElementById('modeScreen');
 const mpScreen = document.getElementById('mpScreen');
@@ -23,10 +24,13 @@ const nameRow = document.getElementById('mpNameRow');
 const nameInput = document.getElementById('mpNameInput');
 const joinBtn = document.getElementById('mpJoinBtn');
 const bannerEl = document.getElementById('mpBanner');
+const teamsEl = document.getElementById('mpTeams');
 const listEl = document.getElementById('mpList');
+const startBtn = document.getElementById('mpStartBtn');
 const matchInfo = document.getElementById('matchInfo');
 const readyBtn = document.getElementById('readyBtn');
 
+const TEAM_MAX = 5; // mirrors the server's cap; the server enforces it
 const show = (el, on) => el.classList.toggle('mpHidden', !on);
 // numeric levels travel as their short ?level=N form
 const levelParam = (n) => n.match(/^level(\d+)$/)?.[1] ?? n;
@@ -34,14 +38,6 @@ const levelParam = (n) => n.match(/^level(\d+)$/)?.[1] ?? n;
 function setStatus(text, color) {
   statusEl.textContent = text;
   statusEl.style.color = color || '';
-}
-
-function makeBtn(label, ghost, onClick) {
-  const b = document.createElement('button');
-  b.textContent = label;
-  if (ghost) b.className = 'ghost';
-  b.addEventListener('click', onClick);
-  return b;
 }
 
 /* ============================================================
@@ -53,43 +49,82 @@ if (MP.active) {
   matchInfo.textContent = 'CONNECTING TO SERVER…';
   connect();
 
+  const gone = new Set(); // players who left before the match began
+  let matchDead = false;  // failed pre-start: ignore a late "go"
+  let matchMsg = '';
+
+  /* both rosters + a status line under them */
+  function renderMatchInfo(sub) {
+    if (sub !== null) matchMsg = sub;
+    matchInfo.textContent = '';
+    for (const team of ['blue', 'red']) {
+      const row = document.createElement('div');
+      row.className = `mrTeam ${team}`;
+      const lbl = document.createElement('b');
+      lbl.textContent = `${team.toUpperCase()} TEAM`;
+      row.appendChild(lbl);
+      for (const p of MP.roster.filter((r) => r.team === team)) {
+        const s = document.createElement('span');
+        s.className = 'mrName'
+          + (gone.has(p.id) ? ' gone' : '')
+          + (p.id === MP.playerId ? ' me' : '');
+        s.textContent = p.id === MP.playerId ? `${p.name} (YOU)` : p.name;
+        row.appendChild(s);
+      }
+      matchInfo.appendChild(row);
+    }
+    const sub2 = document.createElement('div');
+    sub2.className = 'sub';
+    sub2.textContent = matchMsg
+      || `YOU FIGHT FOR THE ${MP.myTeam.toUpperCase()} TEAM — DESTROY THEIR BASE`;
+    matchInfo.appendChild(sub2);
+  }
+
+  function matchFail(text) {
+    matchDead = true;
+    matchInfo.textContent = text;
+    readyBtn.textContent = '◂ BACK TO LOBBY';
+    readyBtn.onclick = backToLobby;
+    show(readyBtn, true);
+  }
+
   on('open', () => send({ type: 'rejoin', matchId: MP.matchId, token: MP.token }));
-  on('rejoined', (m) => {
-    matchInfo.innerHTML = '';
-    const vs = document.createElement('div');
-    vs.className = 'vs';
-    vs.textContent = `${MP.name} vs ${m.opponent}`;
-    const sub = document.createElement('div');
-    sub.className = 'sub';
-    sub.textContent = `YOU FIGHT FOR THE ${MP.myTeam.toUpperCase()} TEAM — DESTROY THEIR BASE`;
-    matchInfo.append(vs, sub);
+  on('rejoined', () => {
+    if (matchDead) return;
+    renderMatchInfo('');
     readyBtn.onclick = () => {
       audioCtx(); // unlock audio on the user gesture
       send({ type: 'ready' });
       show(readyBtn, false);
-      matchInfo.textContent = `WAITING FOR ${MP.opponent} TO DEPLOY…`;
+      renderMatchInfo('WAITING FOR THE OTHER PILOTS TO DEPLOY…');
     };
     show(readyBtn, true);
   });
+  on('ready', (m) => {
+    if (game.state !== 'menu' || matchDead) return;
+    renderMatchInfo(`${m.count}/${m.total} PILOTS READY…`);
+  });
   on('go', () => {
-    if (game.state !== 'menu') return; // server re-sends after a mid-match rejoin
+    if (game.state !== 'menu' || matchDead) return; // server re-sends after a mid-match rejoin
     matchScreen.classList.add('hidden');
     startGame();
   });
   on('error', (m) => matchFail(m.message));
-  on('opponentLeft', () => {
-    if (game.state === 'menu') matchFail(`${MP.opponent} LEFT THE MATCH`);
+  on('peerLeft', (m) => {
+    if (game.state !== 'menu' || matchDead) return;
+    gone.add(m.id);
+    const enemies = MP.roster.filter((p) => p.team !== MP.myTeam);
+    if (enemies.every((p) => gone.has(p.id))) matchFail('THE OTHER TEAM LEFT THE MATCH');
+    else renderMatchInfo(null); // refresh the roster, keep the message
+  });
+  on('peerJoined', (m) => {
+    if (game.state !== 'menu' || matchDead) return;
+    gone.delete(m.id);
+    renderMatchInfo(null);
   });
   on('close', () => {
     if (game.state === 'menu') matchFail('CONNECTION LOST — IS THE SERVER RUNNING?');
   });
-}
-
-function matchFail(text) {
-  matchInfo.textContent = text;
-  readyBtn.textContent = '◂ BACK TO LOBBY';
-  readyBtn.onclick = backToLobby;
-  show(readyBtn, true);
 }
 
 /* ============================================================
@@ -97,8 +132,8 @@ function matchFail(text) {
 ============================================================ */
 let myId = null;
 let myName = '';
+let myTeam = null;
 let joined = false;
-let busy = false;        // a challenge involving me is pending
 let autoJoin = false;    // returning from a match: rejoin with the saved name
 let manualClose = false; // BACK pressed: the socket close is expected
 let lastPlayers = [];
@@ -122,10 +157,12 @@ function showMpScreen(open) {
 
 function resetLobbyUi() {
   joined = false;
-  busy = false;
   myId = null;
+  myTeam = null;
   show(nameRow, false);
+  show(teamsEl, false);
   show(listEl, false);
+  show(startBtn, false);
   clearBanner();
 }
 
@@ -142,57 +179,69 @@ function clearBanner() {
 
 let infoTimer = null;
 function infoBanner(text) {
-  busy = false;
   bannerEl.textContent = text;
   show(bannerEl, true);
-  renderList(lastPlayers);
   clearTimeout(infoTimer);
   infoTimer = setTimeout(clearBanner, 3000);
-}
-
-function challengeBanner(text, ...buttons) {
-  busy = true;
-  clearTimeout(infoTimer);
-  bannerEl.textContent = '';
-  const s = document.createElement('span');
-  s.textContent = text;
-  bannerEl.append(s, ...buttons);
-  show(bannerEl, true);
-  renderList(lastPlayers);
 }
 
 function renderList(players) {
   lastPlayers = players;
   if (!joined) return;
+  const me = players.find((p) => p.id === myId);
+  myTeam = me ? me.team : null;
+
+  for (const team of ['blue', 'red']) {
+    const col = document.getElementById(team === 'blue' ? 'mpTeamBlue' : 'mpTeamRed');
+    const list = col.querySelector('.tList');
+    const btn = col.querySelector('button');
+    const members = players.filter((p) => p.team === team);
+    col.querySelector('.tHead').textContent = `${team.toUpperCase()} TEAM ${members.length}/${TEAM_MAX}`;
+    list.textContent = '';
+    for (const p of members) {
+      const row = document.createElement('div');
+      row.className = 'tSlot' + (p.id === myId ? ' me' : '');
+      row.textContent = p.id === myId ? `${p.name} (YOU)` : p.name;
+      list.appendChild(row);
+    }
+    for (let i = members.length; i < TEAM_MAX; i++) {
+      const row = document.createElement('div');
+      row.className = 'tSlot empty';
+      row.textContent = 'OPEN SLOT';
+      list.appendChild(row);
+    }
+    if (myTeam === team) {
+      btn.textContent = 'LEAVE TEAM';
+      btn.disabled = false;
+    } else {
+      btn.textContent = `JOIN ${team.toUpperCase()}`;
+      btn.disabled = members.length >= TEAM_MAX;
+    }
+  }
+
+  // pilots in the lobby who haven't picked a side yet
+  const unassigned = players.filter((p) => !p.team);
   listEl.textContent = '';
-  const others = players.filter((p) => p.id !== myId);
-  if (!others.length) {
+  if (unassigned.length) {
     const row = document.createElement('div');
     row.className = 'mpRow';
     const n = document.createElement('span');
     n.className = 'name';
-    n.textContent = 'NO OTHER PILOTS ONLINE';
+    n.textContent = 'IN LOBBY';
     const st = document.createElement('span');
     st.className = 'st';
-    st.textContent = 'WAITING…';
+    st.textContent = unassigned.map((p) => p.name).join(' · ');
     row.append(n, st);
     listEl.appendChild(row);
-    return;
   }
-  for (const p of others) {
-    const row = document.createElement('div');
-    row.className = 'mpRow';
-    const n = document.createElement('span');
-    n.className = 'name';
-    n.textContent = p.name;
-    const st = document.createElement('span');
-    st.className = 'st';
-    st.textContent = p.busy ? 'IN BATTLE' : 'AVAILABLE';
-    const b = makeBtn('CHALLENGE', false, () => send({ type: 'challenge', targetId: p.id }));
-    b.disabled = p.busy || busy;
-    row.append(n, st, b);
-    listEl.appendChild(row);
-  }
+  show(listEl, !!unassigned.length);
+
+  const blue = players.filter((p) => p.team === 'blue').length;
+  const red = players.filter((p) => p.team === 'red').length;
+  startBtn.disabled = !myTeam || !blue || !red;
+  if (!myTeam) setStatus('PICK A TEAM — BLUE OR RED');
+  else if (!blue || !red) setStatus('WAITING FOR PILOTS ON THE OTHER TEAM…');
+  else setStatus(`READY — STARTING PLAYS YOUR LEVEL (${levelName.toUpperCase()}) FOR EVERYONE`);
 }
 
 function onOpen() {
@@ -222,6 +271,13 @@ if (!MP.active) {
     e.stopPropagation(); // keep game key handling out of the text field
     if (e.key === 'Enter') doJoin();
   });
+  for (const btn of teamsEl.querySelectorAll('button')) {
+    btn.addEventListener('click', () => {
+      // clicking my own team's button steps back off the roster
+      send({ type: 'team', team: btn.dataset.team === myTeam ? null : btn.dataset.team });
+    });
+  }
+  startBtn.addEventListener('click', () => send({ type: 'startMatch' }));
 
   on('open', onOpen);
   on('close', () => {
@@ -229,46 +285,25 @@ if (!MP.active) {
     resetLobbyUi();
     setStatus('CANNOT REACH THE SERVER — CHECK YOUR CONNECTION AND REOPEN THIS SCREEN', '#ff8a7a');
   });
-  on('error', (m) => setStatus(m.message, '#ff8a7a'));
+  on('error', (m) => { if (joined) infoBanner(m.message); else setStatus(m.message, '#ff8a7a'); });
 
   on('joined', (m) => {
     myId = m.id;
     myName = m.name;
     joined = true;
     localStorage.setItem('mechMpName', m.name);
-    setStatus(`IN LOBBY AS ${m.name} — CHALLENGE A PILOT`);
+    setStatus('PICK A TEAM — BLUE OR RED');
     show(nameRow, false);
-    show(listEl, true);
+    show(teamsEl, true);
+    show(startBtn, true);
+    renderList(lastPlayers);
   });
   on('lobby', (m) => renderList(m.players));
 
-  on('challengeSent', (m) => {
-    challengeBanner(`CHALLENGING ${m.targetName} — WAITING…`,
-      makeBtn('CANCEL', true, () => {
-        send({ type: 'challengeCancel' });
-        infoBanner('CHALLENGE WITHDRAWN');
-      }));
-  });
-  on('challenge', (m) => {
-    beep(660, 880, 0.18, 'square', 0.1);
-    challengeBanner(`${m.fromName} CHALLENGES YOU!`,
-      makeBtn('ACCEPT', false, () => {
-        send({ type: 'challengeResponse', accept: true });
-        challengeBanner('STARTING MATCH…');
-      }),
-      makeBtn('DECLINE', true, () => {
-        send({ type: 'challengeResponse', accept: false });
-        clearBanner();
-        busy = false;
-        renderList(lastPlayers);
-      }));
-  });
-  on('challengeDeclined', (m) => infoBanner(`${m.name} DECLINED THE CHALLENGE`));
-  on('challengeCancelled', () => infoBanner('CHALLENGE WITHDRAWN'));
-
   on('matchStart', (m) => {
     sessionStorage.setItem('mechMpMatch', JSON.stringify({
-      matchId: m.matchId, token: m.token, role: m.role, name: myName, opponent: m.opponent,
+      matchId: m.matchId, token: m.token, playerId: m.playerId,
+      team: m.team, name: myName, roster: m.roster,
     }));
     const url = new URL(location.href);
     url.searchParams.set('level', m.level);

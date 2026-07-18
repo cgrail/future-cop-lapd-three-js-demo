@@ -164,7 +164,7 @@ export function makeBaseEntity(team, x, z) {
   });
 }
 
-export function makeTurretEntity(team, x, z, netId) {
+export function makeTurretEntity(team, x, z, netId, owner = null) {
   const palette = team === 'blue' ? BLUE : RED;
   const model = makeTurretModel(palette);
   model.group.position.set(x, groundHeightAt(x, z), z);
@@ -173,7 +173,7 @@ export function makeTurretEntity(team, x, z, netId) {
   // profile so the match stays symmetric (SP red stats come from applyDifficulty)
   const mine = team === 'blue' || MP.active;
   return registerEntity({
-    kind: 'turret', team, group: model.group, head: model.head, netId,
+    kind: 'turret', team, group: model.group, head: model.head, netId, owner,
     hp: mine ? 260 : 320, maxHp: mine ? 260 : 320, alive: true,
     hitRadius: 2.2, hitHeight: 4, bar, barHeight: 5.2,
     range: mine ? 48 : 44, damage: 8,

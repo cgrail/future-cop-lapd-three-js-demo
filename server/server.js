@@ -9,22 +9,23 @@
      (npm start builds dist/ first via the prestart script)
 
    The server never simulates the game — each client owns its own
-   side's entities (player, turrets, base) and the server just
-   relays events between the two clients of a match.
+   entities (player, turrets) and the server just relays events
+   among the clients of a match (up to 5 per team, 10 total).
 
    Lobby protocol (JSON):
      → join {name, level}            ← joined {id,name} | error {message}
-                                     ← lobby {players:[{id,name,busy}]}
-     → challenge {targetId}          ← challenge {fromId,fromName,level} (to target)
-                                     ← challengeSent {targetId,targetName}
-     → challengeCancel               ← challengeCancelled
-     → challengeResponse {accept}    ← challengeDeclined {name}
-                                     ← matchStart {matchId,token,role,level,opponent}
-   Match protocol (both clients reload into ?mp=1, then):
-     → rejoin {matchId, token}       ← rejoined {role,level,opponent} | error
-     → ready                         ← go            (once both are ready)
-     → relay {data}                  ← relay {data}  (forwarded to the opponent)
-                                     ← opponentLeft
+                                     ← lobby {players:[{id,name,team}]}
+     → team {team:blue|red|null}     ← lobby (roster update) | error (team full)
+     → startMatch                    ← matchStart {matchId,token,playerId,team,
+                                         level,roster:[{id,name,team}]}
+                                       (to everyone on a team; the starter's level)
+   Match protocol (players reload into ?mp=1, then):
+     → rejoin {matchId, token}       ← rejoined {playerId,team,level,roster} | error
+                                     ← peerJoined {id,name}  (to the others)
+     → ready                         ← ready {count,total}
+                                     ← go            (once every slot is ready)
+     → relay {data}                  ← relay {from,data}  (fanned out to the others)
+                                     ← peerLeft {id,name}
 
    Internet hardening — everything is tuned by env vars, all optional:
      PORT               listen port (default 8080)
@@ -35,7 +36,8 @@
      ALLOWED_ORIGINS    extra WebSocket origins, comma-separated
                         (same-origin as the page is always allowed)
      MAX_CLIENTS        total WebSocket connections (default 200)
-     MAX_CONNS_PER_IP   per-address connections (default 8)
+     MAX_CONNS_PER_IP   per-address connections (default 16 — a full
+                        10-player match may sit behind one NAT)
 ============================================================ */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -53,13 +55,13 @@ const TRUST_PROXY = /^(1|true|yes)$/i.test(process.env.TRUST_PROXY || '');
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '')
   .split(',').map((s) => s.trim().toLowerCase().replace(/\/$/, '')).filter(Boolean);
 const MAX_CLIENTS = Number(process.env.MAX_CLIENTS) || 200;
-const MAX_CONNS_PER_IP = Number(process.env.MAX_CONNS_PER_IP) || 8;
+const MAX_CONNS_PER_IP = Number(process.env.MAX_CONNS_PER_IP) || 16;
 
 /* per-socket message budget: a token bucket well above legit peak
-   traffic (15 Hz state + shots + hits from many turrets) that still
-   caps a flooder; grossly-over sockets get cut entirely */
-const RATE_BURST = 300;
-const RATE_PER_SEC = 100;
+   traffic (15 Hz state + shots + hit reports from a full turret line)
+   that still caps a flooder; grossly-over sockets get cut entirely */
+const RATE_BURST = 500;
+const RATE_PER_SEC = 200;
 const MAX_DROPPED = 2000;
 const MAX_BUFFERED = 1 << 20; // relay target stalled → cut it, don't buffer forever
 
@@ -116,9 +118,11 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server, path: '/ws', maxPayload: 4096 });
 wss.on('error', (err) => console.error('wss error:', err.message));
 
+const TEAM_MAX = 5;        // players per side
+
 let nextId = 1;
-const lobby = new Map();   // id -> {id, ws, name, level, busy, peer, initiator}
-const matches = new Map(); // id -> {id, level, created, slots:[{token, role, name, ws, ready, connected}]}
+const lobby = new Map();   // id -> {id, ws, name, level, team}
+const matches = new Map(); // id -> {id, level, created, started, slots:[{token, pid, team, name, ws, ready, connected, abandoned}]}
 const ipConns = new Map(); // ip -> open connection count
 
 const send = (ws, obj) => {
@@ -128,26 +132,32 @@ const send = (ws, obj) => {
 };
 
 function roster() {
-  const players = [...lobby.values()].map((c) => ({ id: c.id, name: c.name, busy: c.busy }));
+  const players = [...lobby.values()].map((c) => ({ id: c.id, name: c.name, team: c.team }));
   for (const c of lobby.values()) send(c.ws, { type: 'lobby', players });
 }
 
 /* names end up in client DOM/HTML — keep them to a harmless charset */
 const cleanName = (n) => String(n || '').replace(/[^\w .\-]/g, '').trim().slice(0, 16);
-/* level names end up in the opponent's URL and a levels/<name>.txt fetch */
+/* level names end up in the other players' URLs and a levels/<name>.txt fetch */
 const cleanLevel = (l) => String(l ?? '1').replace(/[^\w\-]/g, '').slice(0, 32) || '1';
-
-function endChallenge(...pair) {
-  for (const c of pair) if (c) { c.busy = false; c.peer = null; c.initiator = false; }
-}
 
 function dropFromLobby(c) {
   if (!lobby.has(c.id)) return;
-  const peer = c.peer != null ? lobby.get(c.peer) : null;
-  if (peer) send(peer.ws, { type: 'challengeCancelled' });
-  endChallenge(c, peer);
   lobby.delete(c.id);
   roster();
+}
+
+/* broadcast the ready tally; start once every active slot is ready.
+   (Re-fires harmlessly after a mid-match rejoin — clients ignore a
+   repeated "go".) */
+function tryGo(match) {
+  const active = match.slots.filter((s) => !s.abandoned);
+  const count = active.filter((s) => s.ready).length;
+  for (const s of active) send(s.ws, { type: 'ready', count, total: active.length });
+  if (active.length && active.every((s) => s.ready && s.connected)) {
+    match.started = true;
+    for (const s of active) send(s.ws, { type: 'go' });
+  }
 }
 
 function clientIp(req) {
@@ -217,8 +227,8 @@ wss.on('connection', (ws, req) => {
         }
         const client = {
           id: nextId++, ws, name,
-          level: cleanLevel(msg.level), // the level this player has loaded; used when they challenge
-          busy: false, peer: null, initiator: false,
+          level: cleanLevel(msg.level), // the level this player has loaded; used if they start the match
+          team: null,
         };
         lobby.set(client.id, client);
         ws.client = client;
@@ -227,56 +237,49 @@ wss.on('connection', (ws, req) => {
         break;
       }
 
-      case 'challenge': {
-        if (!c || c.busy) return;
-        const t = lobby.get(msg.targetId);
-        if (!t || t === c) return;
-        if (t.busy) { send(ws, { type: 'error', message: `${t.name} IS BUSY` }); return; }
-        c.busy = t.busy = true;
-        c.peer = t.id; t.peer = c.id;
-        c.initiator = true; t.initiator = false;
-        send(t.ws, { type: 'challenge', fromId: c.id, fromName: c.name, level: c.level });
-        send(ws, { type: 'challengeSent', targetId: t.id, targetName: t.name });
+      case 'team': { // pick a side (or null to step back off the roster)
+        if (!c) return;
+        const team = msg.team === 'blue' || msg.team === 'red' ? msg.team : null;
+        if (team && team !== c.team
+          && [...lobby.values()].filter((o) => o.team === team).length >= TEAM_MAX) {
+          send(ws, { type: 'error', message: `THE ${team.toUpperCase()} TEAM IS FULL` });
+          return;
+        }
+        c.team = team;
         roster();
         break;
       }
 
-      case 'challengeCancel': {
-        if (!c || !c.busy || !c.initiator) return;
-        const t = lobby.get(c.peer);
-        if (t) send(t.ws, { type: 'challengeCancelled' });
-        endChallenge(c, t);
-        roster();
-        break;
-      }
-
-      case 'challengeResponse': {
-        if (!c || !c.busy || c.initiator) return; // only the challenged side answers
-        const ch = lobby.get(c.peer);             // the challenger
-        if (!ch) { endChallenge(c); roster(); return; }
-        if (!msg.accept) {
-          send(ch.ws, { type: 'challengeDeclined', name: c.name });
-          endChallenge(c, ch);
-          roster();
-          break;
+      case 'startMatch': {
+        if (!c || !c.team) return;
+        const fighters = [...lobby.values()].filter((o) => o.team);
+        const blue = fighters.filter((o) => o.team === 'blue').length;
+        if (!blue || blue === fighters.length) {
+          send(ws, { type: 'error', message: 'BOTH TEAMS NEED AT LEAST ONE PILOT' });
+          return;
         }
         const match = {
           id: crypto.randomUUID(),
-          level: ch.level, // the challenger's level is played
+          level: c.level, // the starter's level is played
           created: Date.now(),
-          slots: [
-            { token: crypto.randomUUID(), role: 'host', name: ch.name, ws: null, ready: false, connected: false },
-            { token: crypto.randomUUID(), role: 'guest', name: c.name, ws: null, ready: false, connected: false },
-          ],
+          started: false,
+          slots: fighters.map((o) => ({
+            token: crypto.randomUUID(), pid: o.id, team: o.team, name: o.name,
+            ws: null, ready: false, connected: false, abandoned: false,
+          })),
         };
         matches.set(match.id, match);
-        send(ch.ws, { type: 'matchStart', matchId: match.id, token: match.slots[0].token, role: 'host', level: match.level, opponent: c.name });
-        send(ws, { type: 'matchStart', matchId: match.id, token: match.slots[1].token, role: 'guest', level: match.level, opponent: ch.name });
-        // both now reload into the match — drop them from the lobby
-        lobby.delete(c.id);
-        lobby.delete(ch.id);
-        ch.ws.client = null;
-        ws.client = null;
+        const players = match.slots.map((s) => ({ id: s.pid, name: s.name, team: s.team }));
+        // everyone on a team now reloads into the match — drop them from the lobby
+        for (const s of match.slots) {
+          const o = lobby.get(s.pid);
+          send(o.ws, {
+            type: 'matchStart', matchId: match.id, token: s.token,
+            playerId: s.pid, team: s.team, level: match.level, roster: players,
+          });
+          o.ws.client = null;
+          lobby.delete(o.id);
+        }
         roster();
         break;
       }
@@ -290,25 +293,31 @@ wss.on('connection', (ws, req) => {
         if (slot.ws) { try { slot.ws.close(); } catch { /* stale socket */ } }
         slot.ws = ws;
         slot.connected = true;
+        slot.abandoned = false;
         ws.matchRef = { match, slot };
-        const other = match.slots.find((s) => s !== slot);
-        send(ws, { type: 'rejoined', role: slot.role, level: match.level, opponent: other.name });
+        send(ws, {
+          type: 'rejoined', playerId: slot.pid, team: slot.team, level: match.level,
+          roster: match.slots.filter((s) => !s.abandoned)
+            .map((s) => ({ id: s.pid, name: s.name, team: s.team, connected: s.connected })),
+        });
+        for (const s of match.slots) {
+          if (s !== slot) send(s.ws, { type: 'peerJoined', id: slot.pid, name: slot.name });
+        }
         break;
       }
 
       case 'ready': {
         if (!mr) return;
         mr.slot.ready = true;
-        if (mr.match.slots.every((s) => s.ready && s.connected)) {
-          for (const s of mr.match.slots) send(s.ws, { type: 'go' });
-        }
+        tryGo(mr.match);
         break;
       }
 
       case 'relay': {
         if (!mr || msg.data === undefined) return;
-        const other = mr.match.slots.find((s) => s !== mr.slot);
-        send(other.ws, { type: 'relay', data: msg.data });
+        for (const s of mr.match.slots) {
+          if (s !== mr.slot) send(s.ws, { type: 'relay', from: mr.slot.pid, data: msg.data });
+        }
         break;
       }
 
@@ -325,14 +334,15 @@ wss.on('connection', (ws, req) => {
     if (mr && mr.slot.ws === ws) {
       mr.slot.ws = null;
       mr.slot.connected = false;
-      const other = mr.match.slots.find((s) => s !== mr.slot);
-      if (other.connected) send(other.ws, { type: 'opponentLeft' });
+      for (const s of mr.match.slots) send(s.ws, { type: 'peerLeft', id: mr.slot.pid, name: mr.slot.name });
       if (mr.match.slots.every((s) => !s.connected)) matches.delete(mr.match.id);
     }
   });
 });
 
-/* heartbeat + sweep matches whose players never made it back after the reload */
+/* heartbeat + sweep pre-start matches for players who never made it back
+   after the reload: they forfeit their slot (so the ready handshake can't
+   deadlock on them), and a match that lost a whole team is called off */
 setInterval(() => {
   for (const ws of wss.clients) {
     if (!ws.isAlive) { ws.terminate(); continue; }
@@ -341,10 +351,23 @@ setInterval(() => {
   }
   const now = Date.now();
   for (const m of matches.values()) {
-    if (now - m.created > 60_000 && !m.slots.every((s) => s.connected)) {
-      for (const s of m.slots) if (s.connected) send(s.ws, { type: 'opponentLeft' });
-      matches.delete(m.id);
+    if (m.started || now - m.created <= 60_000) continue;
+    let pruned = false;
+    for (const s of m.slots) {
+      if (!s.connected && !s.abandoned) {
+        s.abandoned = true;
+        pruned = true;
+        for (const o of m.slots) if (o !== s) send(o.ws, { type: 'peerLeft', id: s.pid, name: s.name });
+      }
     }
+    const active = m.slots.filter((s) => !s.abandoned);
+    if (!active.length) { matches.delete(m.id); continue; }
+    if (!active.some((s) => s.team === 'blue') || !active.some((s) => s.team === 'red')) {
+      for (const s of active) send(s.ws, { type: 'error', message: 'THE OTHER TEAM NEVER SHOWED UP' });
+      matches.delete(m.id);
+      continue;
+    }
+    if (pruned) tryGo(m);
   }
 }, 30_000);
 

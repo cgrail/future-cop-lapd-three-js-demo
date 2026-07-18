@@ -57,7 +57,8 @@ export function placeTurretDirect() {
   }
   stats.salvage -= COSTS.turret;
   stats.turretsBuilt++;
-  const t = makeTurretEntity(player.team, p.x, p.z, `${player.team}:t${stats.turretsBuilt}`);
+  // netId carries my playerId so every client knows who owns (simulates) it
+  const t = makeTurretEntity(player.team, p.x, p.z, `t:${MP.playerId}:${stats.turretsBuilt}`, MP.playerId);
   if (MP.active) sendGame({ t: 'build', id: t.netId, x: +p.x.toFixed(1), z: +p.z.toFixed(1) });
   spawnSpark(new THREE.Vector3(p.x, groundHeightAt(p.x, p.z) + 2, p.z));
   beep(500, 1100, 0.15, 'sine', 0.12);

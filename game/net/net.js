@@ -7,28 +7,31 @@
    (player.js, entities.js) can branch on it during boot.
 
    A multiplayer match is a page reload into ?mp=1 with the match
-   credentials (id, token, role) parked in sessionStorage by the
-   lobby — host plays blue, guest plays red.
+   credentials (id, token, playerId, team, roster) parked in
+   sessionStorage by the lobby. Up to 5 players per team; each
+   client owns its player and the turrets it builds, identified
+   by its playerId.
 ============================================================ */
 const params = new URLSearchParams(location.search);
 
 let session = null;
 if (params.get('mp') === '1') {
   try { session = JSON.parse(sessionStorage.getItem('mechMpMatch')); } catch { /* stale/absent */ }
+  if (session && session.team !== 'blue' && session.team !== 'red') session = null; // stale pre-team-mode credentials
 }
 
 export const MP = session ? {
   active: true,
-  role: session.role,
-  myTeam: session.role === 'host' ? 'blue' : 'red',
-  enemyTeam: session.role === 'host' ? 'red' : 'blue',
+  playerId: session.playerId,
+  myTeam: session.team,
+  enemyTeam: session.team === 'blue' ? 'red' : 'blue',
   name: session.name,
-  opponent: session.opponent,
+  roster: session.roster || [], // [{id, name, team}] — everyone in the match, me included
   matchId: session.matchId,
   token: session.token,
 } : {
-  active: false, role: 'host', myTeam: 'blue', enemyTeam: 'red',
-  name: '', opponent: '', matchId: null, token: null,
+  active: false, playerId: 0, myTeam: 'blue', enemyTeam: 'red',
+  name: '', roster: [], matchId: null, token: null,
 };
 
 /* netId -> entity, for hit/hp/death events. Filled by registerEntity
@@ -39,7 +42,7 @@ let ws = null;
 const handlers = {};
 
 export function on(type, fn) { (handlers[type] ||= []).push(fn); }
-function emit(type, msg) { for (const fn of handlers[type] || []) fn(msg); }
+function emit(type, msg, from) { for (const fn of handlers[type] || []) fn(msg, from); }
 
 export function connected() { return !!ws && ws.readyState === 1; }
 
@@ -58,7 +61,7 @@ export function connect() {
   sock.onmessage = (ev) => {
     let msg;
     try { msg = JSON.parse(ev.data); } catch { return; }
-    if (msg.type === 'relay') emit('game', msg.data); // in-match game event from the opponent
+    if (msg.type === 'relay') emit('game', msg.data, msg.from); // in-match game event from another player
     else emit(msg.type, msg);
   };
   sock.onclose = () => { if (ws === sock) ws = null; emit('close'); };
@@ -73,5 +76,5 @@ export function send(obj) {
   if (connected()) ws.send(JSON.stringify(obj));
 }
 
-/* wrap a game event for relay to the opponent */
+/* wrap a game event for relay to every other player in the match */
 export function sendGame(data) { send({ type: 'relay', data }); }

@@ -62,17 +62,18 @@ export function drawMinimap() {
   for (const e of entities) {
     if (!e.alive) continue;
     const x = px(e.group.position.x), y = pz(e.group.position.z);
+    const friendly = e.team === player.team; // relative colors: my side reads blue even when I fight as red
     if (e.kind === 'base') {
-      mctx.fillStyle = e.team === 'blue' ? '#4d8dff' : '#ff5040';
+      mctx.fillStyle = friendly ? '#4d8dff' : '#ff5040';
       mctx.fillRect(x - 4, y - 4, 8, 8);
     } else if (e.kind === 'turret') {
-      mctx.fillStyle = e.team === 'blue' ? '#8fd0ff' : '#ffb060';
+      mctx.fillStyle = friendly ? '#8fd0ff' : '#ffb060';
       mctx.fillRect(x - 2, y - 2, 4, 4);
     } else if (e === player) {
       mctx.fillStyle = '#7CFF6B';
       mctx.beginPath(); mctx.arc(x, y, 3.4, 0, 7); mctx.fill();
     } else {
-      mctx.fillStyle = '#ff4535';
+      mctx.fillStyle = friendly ? '#6fd2ff' : '#ff4535';
       mctx.beginPath(); mctx.arc(x, y, 2.6, 0, 7); mctx.fill();
     }
   }

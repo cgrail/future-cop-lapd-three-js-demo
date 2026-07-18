@@ -60,11 +60,18 @@ export function spawnProjectile(opts) {
   }
 }
 
-/* route damage: opponent-owned entities are reported to their owner
-   instead of being damaged locally */
+/* route damage: entities owned by another player are reported to their
+   owner instead of being damaged locally; bases are shared (unowned), so
+   the shooter applies base damage and broadcasts it for everyone to mirror */
 function applyHit(e, dmg, src) {
   if (MP.active && e.team === MP.enemyTeam) {
-    if (e.netId) sendGame({ t: 'hit', id: e.netId, d: Math.round(dmg * 10) / 10 });
+    dmg = Math.round(dmg * 10) / 10;
+    if (e.kind === 'base') {
+      sendGame({ t: 'bhit', tm: e.team, d: dmg });
+      damageEntity(e, dmg, src);
+    } else if (e.netId) {
+      sendGame({ t: 'hit', id: e.netId, d: dmg }); // its owner applies + echoes hp
+    }
     return;
   }
   damageEntity(e, dmg, src);
@@ -85,23 +92,27 @@ export function damageEntity(e, dmg, src) {
   }
   if (e.kind === 'base') updateHud();
   if (e.hp <= 0) { killEntity(e); return; }
-  // echo the authoritative hp to the opponent (player hp rides the state tick)
-  if (MP.active && e.netId && e.team === MP.myTeam && e.kind !== 'player') {
+  // echo the authoritative hp of my own entities to everyone (player hp
+  // rides the state tick; bases are unowned — bhit converges on its own)
+  if (MP.active && e.netId && e.owner === MP.playerId && e.kind !== 'player') {
     sendGame({ t: 'hp', id: e.netId, hp: Math.round(e.hp) });
   }
 }
 
 export function killEntity(e) {
   e.alive = false;
-  // my entities die on my client — tell the opponent to mirror it
-  if (MP.active && e.netId && e.team === MP.myTeam) sendGame({ t: 'die', id: e.netId });
+  // entities I own die on my client — tell everyone else to mirror it
+  // (bases are unowned: every client kills its own copy via bhit damage)
+  if (MP.active && e.netId && e.owner === MP.playerId) sendGame({ t: 'die', id: e.netId });
   const p = e.group.position;
   const scale = e.kind === 'base' ? 3 : e.kind === 'turret' ? 1.2 : 1.6;
   spawnExplosion(p.x, e.hitHeight / 2, p.z, scale);
   boomSfx(e.kind === 'base' ? 0.5 : 0.3, e.kind === 'base' ? 0.8 : 0.4);
 
   if (e.team === MP.enemyTeam) {
-    const mult = MP.active ? 1 : difficulty().salvageMult; // symmetric income in PvP
+    // symmetric income in PvP; a kill pays the whole team (every enemy
+    // client mirrors the death through this same path)
+    const mult = MP.active ? 1 : difficulty().salvageMult;
     if (e.kind === 'mech') {
       stats.kills++;
       stats.salvage += 40 * mult;

@@ -198,10 +198,14 @@ export function endGame(victory, reason) {
         document.getElementById(id).classList.add('mpHidden');
       }
       const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+      const mates = MP.roster.filter((p) => p.team === MP.myTeam && p.id !== MP.playerId).map((p) => p.name);
+      const foes = MP.roster.filter((p) => p.team !== MP.myTeam).map((p) => p.name);
       document.getElementById('briefing').innerHTML =
-        `<b>MULTIPLAYER — vs ${esc(MP.opponent)}</b><br>Kills: <b>${stats.kills}</b> · Turrets built: <b>${stats.turretsBuilt}</b><br>` +
+        `<b>MULTIPLAYER — ${MP.myTeam.toUpperCase()} TEAM vs ${esc(foes.join(' · '))}</b><br>` +
+        (mates.length ? `Fought beside <b>${esc(mates.join(' · '))}</b><br>` : '') +
+        `Kills: <b>${stats.kills}</b> · Turrets built: <b>${stats.turretsBuilt}</b><br>` +
         (victory
-          ? 'District secured, officer. Head back to the lobby for the next challenger.'
+          ? 'District secured, officer. Head back to the lobby for the next battle.'
           : 'The district has fallen. Return to the lobby and take the rematch.');
       document.getElementById('startBtn').textContent = 'BACK TO LOBBY';
     } else {

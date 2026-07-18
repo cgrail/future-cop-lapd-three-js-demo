@@ -4,23 +4,24 @@ import { BLUE, RED, entities, makeBar, makeMech, registerEntity } from './entiti
 import { game, stats, touch, COSTS } from '../core/state.js';
 import { keys } from '../systems/input.js';
 import { groundHeightAt } from '../world/world.js';
-import { forwardOf, localToWorld, losBlocked, collideCircle, updateVertical, aimYOf, spawnPointFor } from '../core/helpers.js';
+import { forwardOf, localToWorld, losBlocked, collideCircle, updateVertical, aimYOf, spawnPointFor, teamIndexOf } from '../core/helpers.js';
 import { spawnProjectile } from './projectiles.js';
 import { beep, laserSfx } from '../systems/audio.js';
 import { updateHud, showMessage } from '../ui/hud.js';
 import { MP, sendGame } from '../net/net.js';
 
 /* ============================================================
-   Player entity — in multiplayer the guest plays the red side
+   Player entity — in multiplayer my team comes from the lobby,
+   and my spawn index keeps teammates off each other's spot
 ============================================================ */
 export const playerModel = makeMech(MP.myTeam === 'red' ? RED : BLUE);
 const playerBar = makeBar(5);
-const sp = spawnPointFor(MP.myTeam);
+const sp = spawnPointFor(MP.myTeam, teamIndexOf(MP.playerId, MP.myTeam, MP.roster));
 const SPAWN = sp.pos;
 const spawnYaw = Math.atan2(sp.face.x - SPAWN.x, sp.face.z - SPAWN.z); // face the enemy base
 export const player = registerEntity({
   kind: 'player', team: MP.myTeam, group: playerModel.group, model: playerModel,
-  netId: `player:${MP.myTeam}`,
+  netId: `player:${MP.playerId}`, owner: MP.playerId,
   hp: 300, maxHp: 300, alive: true,
   hitRadius: 2.4, hitHeight: 7, bar: playerBar, barHeight: 8.2,
   yaw: spawnYaw, walkPhase: 0, velX: 0, velZ: 0,

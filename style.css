@@ -312,6 +312,38 @@ body.touch #ctrlRow { display: flex; }
 #matchInfo .vs { font-size: 18px; font-weight: 800; letter-spacing: 3px; color: #ffd23c; }
 #matchInfo .sub { font-size: 12px; letter-spacing: 1px; color: #8a92ad; margin-top: 6px; }
 
+/* team pick: two rosters side by side */
+#mpTeams { display: flex; gap: 14px; width: min(560px, 86vw); }
+.mpTeam {
+  flex: 1; display: flex; flex-direction: column; gap: 6px;
+  background: rgba(20, 24, 40, .5); border: 1px solid #2f4a7a; border-radius: 10px;
+  padding: 10px;
+}
+.mpTeam.red { border-color: #7a3a2f; }
+.mpTeam .tHead { font-size: 12px; letter-spacing: 2px; font-weight: 800; color: #8fb7ff; }
+.mpTeam.red .tHead { color: #ff9a8a; }
+.tSlot {
+  font-size: 12px; letter-spacing: 1px; text-align: left;
+  padding: 5px 8px; border-radius: 6px;
+  background: rgba(61, 123, 255, .12); color: #cdd8ff;
+}
+.mpTeam.red .tSlot { background: rgba(255, 74, 61, .10); }
+.tSlot.me { outline: 1px solid #6f83c9; font-weight: 700; color: #ffd23c; }
+.tSlot.empty { background: transparent; color: #55617a; border: 1px dashed #33405f; }
+#overlay .mpTeam button { font-size: 12px; letter-spacing: 2px; padding: 8px 10px; }
+#overlay #mpStartBtn { font-size: 14px; letter-spacing: 3px; padding: 12px 26px; }
+#overlay #mpStartBtn:disabled, #overlay .mpTeam button:disabled {
+  filter: grayscale(1) brightness(.6); cursor: default;
+}
+
+/* match screen: both rosters above the ready button */
+.mrTeam { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: center; align-items: baseline; margin: 4px 0; }
+.mrTeam > b { font-size: 12px; letter-spacing: 2px; color: #8fb7ff; }
+.mrTeam.red > b { color: #ff9a8a; }
+.mrName { font-size: 13px; font-weight: 700; letter-spacing: 1px; color: #cdd8ff; }
+.mrName.me { color: #ffd23c; }
+.mrName.gone { color: #55617a; text-decoration: line-through; }
+
 /* small screens (portrait or landscape phones): compact the menu so it fits
    more often — and when it still doesn't, #overlay scrolls. Placed after the
    menu rules above so the equal-specificity overrides here win the cascade. */
