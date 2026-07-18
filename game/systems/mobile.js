@@ -10,7 +10,8 @@ import { placeTurretDirect } from './build.js';
    joystick — left half: floating joystick, up/down moves,
               left/right strafes; right half: drag to turn,
               hold to fire machine guns
-   gyro     — compass (alpha) rotates, lean (beta) moves,
+   gyro     — compass (alpha) rotates 1:1 (physically turn around to
+              look behind you), lean (beta) moves,
               side tilt (gamma) strafes; any touch fires
 
    On-screen buttons fire rockets / place turrets in both.
