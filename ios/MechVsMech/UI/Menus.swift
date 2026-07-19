@@ -53,6 +53,7 @@ struct MenuScreen: View {
             VStack(spacing: 12) {
                 if over {
                     TitleBlock(
+                        eyebrow: nil,
                         h1: model.victory ? "VICTORY" : (model.isMPMatch ? "DEFEAT" : "BASE LOST"),
                         h1Color: model.victory ? Color(hex: 0x7CFF6B) : Color(hex: 0xff5040),
                         h2: model.endReason ?? (model.victory ? "ENEMY BASE DESTROYED — DISTRICT SECURED" : "YOUR BASE WAS DESTROYED")

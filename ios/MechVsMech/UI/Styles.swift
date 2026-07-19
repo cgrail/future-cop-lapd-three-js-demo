@@ -54,11 +54,18 @@ struct OverlayFrame<Content: View>: View {
 }
 
 struct TitleBlock: View {
+    var eyebrow: String? = "grails.de"
     var h1 = "MECH VS MECH"
     var h1Color = Color.white
     var h2 = "BASE STRIKE"
     var body: some View {
         VStack(spacing: 2) {
+            if let eyebrow {
+                Text(eyebrow)
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .kerning(2)
+                    .foregroundColor(.white.opacity(0.55))
+            }
             Text(h1)
                 .font(.system(size: 34, weight: .black, design: .rounded))
                 .kerning(3)
