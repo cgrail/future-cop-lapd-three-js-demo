@@ -36,8 +36,8 @@ final class AppModel: ObservableObject {
     @Published var screen: Screen = .mode {
         didSet {
             guard screen != oldValue else { return }
-            // freeze the grip for the whole match, hold it through the end screen,
-            // and open both landscapes back up on any menu/lobby screen
+            // freeze the orientation for the whole match, hold it through the
+            // end screen, and let any menu/lobby screen rotate freely again
             switch screen {
             case .playing: OrientationLock.freezeToCurrent()
             case .over:    break
