@@ -254,7 +254,8 @@ final class GameEngine {
             let t = time * 0.2
             let r = (max(level.arenaHW, level.arenaHD) * 1.1 + 25) / min(1, viewAspect)
             cameraNode.position = SCNVector3(sin(t) * r, r * 0.85, cos(t) * r)
-            cameraNode.look(at: SCNVector3(0, 0, 0))
+            cameraNode.look(at: SCNVector3(0, 0, 0),
+                            up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
         }
 
         pushHud()
@@ -272,9 +273,12 @@ final class GameEngine {
         pos.y += (Float(player.y + up) - pos.y) * k
         pos.z += (Float(cz) - pos.z) * k
         cameraNode.position = pos
-        // aim well ahead of the mech: tilts the view up so more of the field shows
-        cameraNode.look(at: SCNVector3(
-            player.x + sin(yaw) * 17, player.y + 2, player.z + cos(yaw) * 17))
+        // aim well ahead of the mech: tilts the view up so more of the field shows.
+        // Pass world-up explicitly — SceneKit's 1-arg look(at:) rolls the horizon as
+        // the yaw swings; pinning up to (0,1,0) keeps it level like three.js lookAt.
+        cameraNode.look(
+            at: SCNVector3(player.x + sin(yaw) * 17, player.y + 2, player.z + cos(yaw) * 17),
+            up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
     }
 
     private func pushHud() {
