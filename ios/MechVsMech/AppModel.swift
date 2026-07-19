@@ -33,7 +33,18 @@ final class AppModel: ObservableObject {
     }
 
     let levels: [LevelInfo]
-    @Published var screen: Screen = .mode
+    @Published var screen: Screen = .mode {
+        didSet {
+            guard screen != oldValue else { return }
+            // freeze the grip for the whole match, hold it through the end screen,
+            // and open both landscapes back up on any menu/lobby screen
+            switch screen {
+            case .playing: OrientationLock.freezeToCurrent()
+            case .over:    break
+            default:       OrientationLock.unlock()
+            }
+        }
+    }
     @Published var hud = HudSnapshot()
     @Published var message: GameMessage?
     @Published var buildHint: String?
